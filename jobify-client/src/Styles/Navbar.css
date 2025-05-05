@@ -1,0 +1,87 @@
+
+  
+ .jobify-header {
+    position: sticky;          /* makes the navbar stick to the top */
+    top: 0;                    /* stick to the top of the page */
+    z-index: 1000;             /* makes sure it stays above other content */
+  
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 300px;
+
+    background-color: #eff6ff; /* light blue background */
+  
+    box-shadow: 0 2px 8px rgba(106, 107, 106, 0.2); /* softer shadow with transparency */
+    height: 79.2px;
+  }
+  
+
+  
+  .jobify-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+  
+  .logo {
+    width: 150px;
+    height: auto;
+    
+  }
+  
+  /*.jobify-logo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 79.6%;
+    border-radius: -91%;
+    background:
+  linear-gradient(45deg, #f0898e00, #5BB1EC00, #ffcbcb00, #69fdc536, #88b5ff3b);
+      background-size: auto;
+    background-size: auto;
+    background-size: auto;
+    background-size: 400% 400%;
+    animation:
+  borderAnimation 15s cubic-bezier(.79,.14,.15,.86) infinite;
+    z-index: -1;
+    margin-left: -39.2px;
+  
+  }*/
+  
+  @keyframes borderAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .jobify-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 75px;
+  }
+  
+  .jobify-nav a {
+    margin: 0 0.75rem;
+    text-decoration: none;
+    color: #1e293b;
+  }
+  
+  .jobify-nav a:hover {
+    color: #2563eb;
+  }
+
+  
+  

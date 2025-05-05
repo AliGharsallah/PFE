@@ -1,0 +1,240 @@
+/* JobifyAIHome.css */
+
+.jobify-container {
+  font-family: Arial, sans-serif;
+  color: #1e293b;
+  background: white;
+}
+
+
+
+.jobify-hero {
+  text-align: left;
+  padding: 9rem 1rem;
+  padding-left: 7rem;
+  
+  background-image: url(../assets/bck.png);
+  background-size: cover;          /* Make sure image covers entire area */
+  background-position: center;     /* Center the image */
+  background-repeat: no-repeat;    /* Prevent repetition */
+  background-attachment: fixed;    /* Optional parallax effect */
+
+  position: relative;
+  z-index: 77;
+
+  color: #ffffff;                  /* Light text for better contrast */
+  font-size: 2rem;                 /* Adjust as needed */
+  line-height: 1.5;
+  font-weight: 600;
+
+  /* Optional overlay for better text visibility */
+  backdrop-filter: brightness(0.9);
+}
+
+.jobify-hero::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  border-radius: -91%;
+  background: linear-gradient(45deg, #1f1c1d9c, #000000ad, #ffcbcb00, #4e48f2ba, #88b5ffb0);
+    background-size: auto;
+  background-size: auto;
+  background-size: auto;
+  background-size: 400% 400%;
+  animation:
+borderAnimation 15s cubic-bezier(.79,.14,.15,.86) infinite;
+  z-index: -1;
+}
+.jobify-hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.jobify-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 4rem;
+}
+
+.jobify-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  text-align: center;
+  width: 100%;
+  margin-top: 2px;
+}
+
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin:0 auto;
+  overflow:hidden;
+  background: #eff6ff;
+}
+
+.slider {
+  display: flex;
+  flex-wrap: nowrap; /* Les éléments restent sur la même ligne */
+  animation:slide 30s linear infinite;/* Défilement continu */
+  width: auto;
+}
+.slider img{
+width:70%;
+background: #4c5adc4d;
+padding: 5.8px;
+}
+.slider-items {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feature-card-container {
+  width: 310px; /* Chaque carte occupe une largeur de 300px */
+  margin: 0 30px;
+  flex-shrink: 0; /* Empêche les cartes de se rétrécir */
+}
+
+.feature-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  width: 33%;
+  margin: 1rem;
+  z-index: 0;
+  color:rgb(2, 27, 35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1); /* légère transparence */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.3s ease;
+  font-family: 'montserrat';
+  font-weight: 200;
+}
+
+/* Le dégradé animé s'applique individuellement */
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+ /* background: linear-gradient( 45deg, #1810129c, #007bffcf, #fd34341f, #6365e6, #88b5ffb0 );*/
+  background-size: 400% 400%;
+  animation: borderAnimation 15s cubic-bezier(.79, .14, .15, .86) infinite;
+  z-index: -1;
+  filter: blur(30px);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+
+.feature-card img {
+  width: 50%;
+  border-radius: 8px;
+}
+
+.feature-card h2, .feature-card p {
+  margin: 10px 0;
+}
+
+/* Animation pour le défilement du slider de droite à gauche */
+@keyframes slide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.jobify-benefits {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 4rem 2rem;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  gap: 2rem;
+}
+
+.jobify-benefits > div {
+  max-width: 400px;
+}
+
+.jobify-benefits h2 {
+  font-size: 1.75rem;
+  color: #0d1b2a;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.jobify-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.jobify-benefits li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #1c1c1c;
+}
+
+.jobify-benefits li::before {
+  content: "▶";
+  position: absolute;
+  left: 0;
+  color: #4f46e5;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+
+.jobify-cta {
+  background: #eff6ff;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.jobify-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: #f1f5f9;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  margin-right: 1.25rem;
+  color: #475569;
+  text-decoration: none;
+}
+
+.footer-lang a {
+  margin-left: 0.5rem;
+  color: #2563eb;
+  font-weight: 600;
+}

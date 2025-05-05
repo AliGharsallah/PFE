@@ -1,0 +1,106 @@
+/* Top bar */
+.topbar-condidate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin-left: 34.2px;
+}
+
+/* Wrapper global pour le Dashboard */
+.dashboard-wrapper-condidate {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f2ef;
+}
+
+/* Sidebar */
+.candidate-sidebar {
+  position: fixed;              /* Fixe la sidebar à gauche */
+  top: 0;
+  left: 0;
+  height: 100vh;                /* Prend toute la hauteur de l'écran */
+  width: 250px;
+  background-color: #fff;
+  padding: 1.5rem 1rem;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 999;
+}
+
+.Jobify-logo-condidate {
+  width: 140px;
+  margin-bottom: 2rem;
+  margin-left: 3.5rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-menu li {
+  width: 100%;
+  padding: 12px 1px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar-menu li:hover {
+  background-color: #eef3f8;
+  color: #0a66c2;
+}
+
+.sidebar-menu .active {
+  background-color: #e1ecf4;
+  color: #0a66c2;
+  font-weight: bold;
+}
+
+.logout {
+  margin-top: auto;
+  color: #c0392b;
+  font-weight: 600;
+}
+
+/* Search Input */
+.search-input {
+  padding: 8px 16px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Notification Icon */
+.notification-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Main Content Wrapper */
+.dashboard-main {
+  margin-left: 250px;           /* Décale le contenu pour laisser la place à la sidebar */
+  width: calc(100% - 250px);    /* Ajuste la largeur pour ne pas dépasser */
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f0f0;
+  
+}

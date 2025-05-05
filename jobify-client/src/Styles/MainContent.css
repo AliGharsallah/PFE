@@ -1,0 +1,166 @@
+/* Dashboard Content */
+.dashboard-content {
+    display: flex;
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+  padding: 1rem;
+  flex-grow: 1;
+  background-color: #f9f9f9;
+
+  }
+  
+  /* Left Section */
+  .left-section {
+    width: 40%;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Right Section */
+  .right-section {
+    width: 60%;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Job Cards */
+  .job-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+    margin:auto;
+  }
+  
+  .job-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .job-card:hover {
+    transform: translateY(-5px); /* Déplacement léger lors du survol */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Titre de l'offre */
+  .job-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  /* Entreprise */
+  .job-company {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+  
+  /* Description */
+  .job-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    text-align: justify;
+  }
+  
+  /* Salaire */
+  .job-salary,
+  .job-time {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+  
+  /* Salaire */
+  .job-salary {
+    color: #333;
+    background-color: #f0f0f0;
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  /* Temps de travail */
+  .job-time {
+    color: #fff;
+    background-color: #4e7eb6; /* Couleur bleue */
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  /* Statut (Actif/Expiré) */
+  .job-status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: 8px;
+  }
+  
+  .job-status.active {
+    background-color: #28a745; /* Vert pour actif */
+    color: white;
+  }
+  
+  .job-status.expired {
+    background-color: #dc3545; /* Rouge pour expiré */
+    color: white;
+  }
+  
+  /* Icônes J'aime et Postuler */
+  .job-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .job-action-icon {
+    font-size: 22px;
+    cursor: pointer;
+    color: #007bff;
+    transition: color 0.3s ease;
+  }
+  
+  .job-action-icon:hover {
+    color: #0056b3;
+  }
+  
+  /* Style pour le bouton "Postuler" */
+  .apply-button {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .apply-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .apply-button .apply-icon {
+    margin-right: 8px;
+  }
+  

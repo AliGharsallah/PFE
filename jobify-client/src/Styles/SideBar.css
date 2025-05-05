@@ -1,0 +1,98 @@
+.sidebar {
+    width: 187.2px;
+    height: 100vh;
+    background-color: #222B52;
+    padding: 20px;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar-logo {
+   height:auto;
+   width: 120px;
+   margin:auto;
+    margin-bottom: 24px;
+    
+}
+.sidebar-nav{
+    flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 58.8%;
+    justify-content: space-around;
+}
+
+.sidebar-nav li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #fff;
+}
+
+.sidebar-nav li:hover {
+    background-color: #e5edfa;
+    color: #2563eb;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.company-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    gap:2px;
+}
+
+.company-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.company-name {
+    font-size: 14px;
+    color: #ffffff;
+
+
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: transparent;
+    border: none;
+    color: #d32f2f;
+    font-size: 14px;
+    cursor: pointer;
+    margin: auto;
+    border-radius: 6px;
+    transition: background 0.2s;
+    margin-bottom: 43.6px;
+}
+
+.logout-btn:hover {
+    background-color: #ffe5e5;
+}

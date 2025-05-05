@@ -1,0 +1,181 @@
+.auth-page-div {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(45deg, #e6e6e60d, #08d2f5, #ffcbcb00, #4e48f2db, #1de2dc);
+  background-size: 400% 400%;
+  animation: borderAnimation 15s cubic-bezier(.79,.14,.15,.86) infinite;
+}
+
+.container {
+  background-color: #ffffff;
+  border-radius: 16px;
+  width: 800px;
+  max-width: 95%;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.panel {
+  flex: 1;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.left-panel {
+  background-color: #5E62E4;
+  color: white;
+  text-align: center;
+  position: relative;
+}
+
+.left-panel h2 {
+  position: relative;
+  color: #ffffffdd;
+  font-size: 1.1rem;
+  z-index: 2;
+  margin-top: -80px;
+}
+
+.form-wrapper {
+  background-color: #f9f9f9;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.forms {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s ease-in-out;
+}
+
+form {
+  width: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+form h2 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+input,
+select {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fcfcfc;
+  transition: border-color 0.3s ease;
+  color: #0000006b;
+}
+
+
+input:focus,
+select:focus {
+  border-color: #6365E6;
+  outline: none;
+}
+
+button {
+  padding: 12px;
+  border: none;
+  background-color: #6365E6;
+  color: white;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4f51c4;
+}
+
+.toggle {
+  font-size: 0.85rem;
+  color: #6365E6;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: text-decoration 0.2s;
+}
+
+.toggle:hover {
+  text-decoration: underline;
+}
+
+.slide-register .forms {
+  transform: translateX(-50%);
+}
+
+.jobifylogo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 60px;
+}
+
+.liquid-container {
+  position: relative;
+  margin: 100px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.blob {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  background: #f07171;
+  border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+  animation: blob-animation 8s ease-in-out infinite;
+  opacity: 0.2;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.blob:nth-child(2) {
+  width: 500px;
+  height: 700px;
+  background: #fff;
+  animation-delay: 4s;
+  opacity: 0.15;
+  filter: blur(80px);
+}
+
+.logo-container {
+  z-index: 2;
+  position: relative;
+}
+
+@keyframes blob-animation {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+}
+
+@keyframes borderAnimation {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
