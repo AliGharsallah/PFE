@@ -1,26 +1,25 @@
-// src/components/Sidebar.tsx
 import React from 'react';
 import '../Styles/SideBar.css';
 import { Home, Users, FileText, BarChart3, LogOut, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Proxym_logo from '../assets/proxym_logo.jpg';
-import jobify_logo from '../assets/jobify-logo.svg'
-
+import jobify_logo from '../assets/jobify-logo.svg';
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const companyName = "Proxym Group"; // à remplacer dynamiquement plus tard
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // ou sessionStorage.removeItem
-        navigate('/auth'); // Rediriger vers la page de connexion
+        logout();
+        navigate('/auth');
     };
     
-
     return (
         <aside className="sidebar">
-            <img  className="sidebar-logo"src={jobify_logo} alt=""  />
+            <img className="sidebar-logo" src={jobify_logo} alt="" />
 
             <nav className="sidebar-nav">
                 <ul>

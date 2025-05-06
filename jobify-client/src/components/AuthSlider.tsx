@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../Styles/Auth.css';
 import Jobifylogo from "../assets/jobify-logo.svg";
+import { authService } from '../services/api';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,17 +13,16 @@ const AuthSlider: React.FC = () => {
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('candidate');
     const [name, setName] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     // 🔐 Login
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/login', {
-                email,
-                password,
-            });
-
+            const res = await authService.login({ email, password });
             localStorage.setItem('token', res.data.token);
             localStorage.setItem('role', res.data.role);
 
@@ -41,21 +40,21 @@ const AuthSlider: React.FC = () => {
             setPassword('');
         } catch (err: any) {
             toast.error(err.response?.data?.message || "❌ Connexion échouée");
+        } finally {
+            setLoading(false);
         }
     };
 
     // 📝 Register
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/register', {
-                email,
-                password,
-                name,
-                role,
-            });
-
+            const res = await authService.register({ email, password, name, role });
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('role', res.data.role);
+            
             toast.success("🎉 Compte créé avec succès !");
 
             // Vider les champs
@@ -63,9 +62,18 @@ const AuthSlider: React.FC = () => {
             setEmail('');
             setPassword('');
             setRole('candidate');
-            setIsRegistering(false); // Retourner à la page login
+            
+            setTimeout(() => {
+                if (res.data.role === 'recruiter') {
+                    navigate('/recruiters');
+                } else if (res.data.role === 'candidate') {
+                    navigate('/Condidates');
+                }
+            }, 1000);
         } catch (err: any) {
             toast.error(err.response?.data?.message || "❌ Inscription échouée");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -94,6 +102,7 @@ const AuthSlider: React.FC = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
+                                disabled={loading}
                             />
                             <input
                                 type="password"
@@ -101,8 +110,11 @@ const AuthSlider: React.FC = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                disabled={loading}
                             />
-                            <button type="submit">Login</button>
+                            <button type="submit" disabled={loading}>
+                                {loading ? 'Connexion...' : 'Login'}
+                            </button>
                             <div className="toggle" onClick={() => setIsRegistering(true)}>
                                 Don't have an account? Register
                             </div>
@@ -117,6 +129,7 @@ const AuthSlider: React.FC = () => {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
+                                disabled={loading}
                             />
                             <input
                                 type="email"
@@ -124,6 +137,7 @@ const AuthSlider: React.FC = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
+                                disabled={loading}
                             />
                             <input
                                 type="password"
@@ -131,12 +145,15 @@ const AuthSlider: React.FC = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                disabled={loading}
                             />
-                            <select value={role} onChange={(e) => setRole(e.target.value)} required>
+                            <select value={role} onChange={(e) => setRole(e.target.value)} required disabled={loading}>
                                 <option value="recruiter">Employer</option>
                                 <option value="candidate">Candidate</option>
                             </select>
-                            <button type="submit">Register</button>
+                            <button type="submit" disabled={loading}>
+                                {loading ? 'Inscription...' : 'Register'}
+                            </button>
                             <div className="toggle" onClick={() => setIsRegistering(false)}>
                                 Already have an account? Login
                             </div>

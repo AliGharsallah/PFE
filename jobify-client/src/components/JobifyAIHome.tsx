@@ -4,25 +4,26 @@ import Card from "./Card";
 import { useNavigate } from 'react-router-dom';
 import Button from "./Button";
 import Navbar from './Navbar';
-import '../Styles/Card.css'
+import '../Styles/Card.css';
 import UIUX from '../assets/uiux.jpg';
 import CHEFP from '../assets/projectmanager.jpg';
 import FRONTEND from '../assets/frontend.jpg';
 import ASSISTANT from '../assets/assistant.jpg';
-
-
+import { useAuth } from '../context/AuthContext';
 
 const JobifyAIHome: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const offers = [
     { id: 1, title: 'Développeur Frontend', description: 'Travail à distance, 40 heures/semaine', image: FRONTEND },
     { id: 2, title: 'Designer UI/UX', description: 'Création de designs modernes', image:UIUX },
     { id: 3, title: 'Assistant virtuel', description: 'Gestion administrative à distance', image: ASSISTANT },
-    { id: 4, title: 'Chef de projet', description: 'Coordination d’équipes à distance', image: CHEFP },
+    { id: 4, title: 'Chef de projet', description: 'Coordination d équipes à distance', image: CHEFP },
     { id: 5, title: 'Développeur Frontend', description: 'Travail à distance, 40 heures/semaine', image: FRONTEND },
     { id: 6, title: 'Designer UI/UX', description: 'Création de designs modernes', image: UIUX },
     { id: 7, title: 'Assistant virtuel', description: 'Gestion administrative à distance', image: ASSISTANT },
-    { id: 8, title: 'Chef de projet', description: 'Coordination d’équipes à distance', image: CHEFP },
-    // Ajoute plus d'offres ici...
+    { id: 8, title: 'Chef de projet', description: 'Coordination d équipes à distance', image: CHEFP },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,6 +36,31 @@ const JobifyAIHome: React.FC = () => {
 
     return () => clearInterval(interval); // Nettoyage de l'intervalle à la destruction du composant
   }, [offers.length]);
+
+  const handleRegisterCandidate = () => {
+    if (user.isAuthenticated) {
+      if (user.role === 'candidate') {
+        navigate('/Condidates');
+      } else {
+        navigate('/auth');
+      }
+    } else {
+      navigate('/auth');
+    }
+  };
+
+  const handleRegisterRecruiter = () => {
+    if (user.isAuthenticated) {
+      if (user.role === 'recruiter') {
+        navigate('/recruiters');
+      } else {
+        navigate('/auth');
+      }
+    } else {
+      navigate('/auth');
+    }
+  };
+
   return (
     <div className="jobify-container">
       {/* Hero Section */}

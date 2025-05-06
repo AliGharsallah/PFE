@@ -20,7 +20,10 @@ connectDB();
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Votre frontend Vite
+  credentials: true
+}));
 app.use(express.json()); // Middleware pour parser le JSON
 app.use(fileUpload()); // Middleware pour gérer les uploads de fichiers
 app.use(express.static('uploads')); // Rendre le dossier uploads accessible

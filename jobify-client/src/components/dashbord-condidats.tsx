@@ -5,14 +5,17 @@ import ProfileSettings from './ProfileSettings';
 import Offers from '../components/Offers';
 import Profile from '../components/Profile';
 import MainContent from '../components/MainContent';
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const CandidateDashboard = () => {
   const [activeTab, setActiveTab] = useState<'home' | 'offers' | 'profile' | 'settings'>('home');
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/auth';
+    logout();
+    navigate('/auth');
   };
 
   const renderContent = () => {
