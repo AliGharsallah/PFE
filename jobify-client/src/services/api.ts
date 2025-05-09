@@ -28,18 +28,18 @@ API.interceptors.request.use(
 
 // Authentication services
 export const authService = {
-  register: (userData) => API.post('/auth/register', userData),
-  login: (credentials) => API.post('/auth/login', credentials),
+  register: (userData: { username: string; email: string; password: string }) => API.post('/auth/register', userData),
+  login: (credentials: { email: string; password: string }) => API.post('/auth/login', credentials),
 };
 
 // Job services
 export const jobService = {
   getAllJobs: () => API.get('/jobs'),
   getMyJobs: () => API.get('/jobs/my-jobs'),
-  getJob: (id) => API.get(`/jobs/${id}`),
-  createJob: (jobData) => API.post('/jobs', jobData),
-  updateJob: (id, jobData) => API.patch(`/jobs/${id}`, jobData),
-  deleteJob: (id) => API.delete(`/jobs/${id}`),
+  getJob: (id: string) => API.get(`/jobs/${id}`),
+  createJob: (jobData: { title: string; description: string; requirements: string[]; salary?: number }) => API.post('/jobs', jobData),
+  updateJob: (id: string, jobData: { title?: string; description?: string; requirements?: string[]; salary?: number }) => API.patch(`/jobs/${id}`, jobData),
+  deleteJob: (id: string) => API.delete(`/jobs/${id}`),
 };
 
 // Application services
@@ -61,11 +61,14 @@ export const applicationService = {
 };
 
 // Technical test services
+// Mise à jour de src/services/api.ts (ajout/modification de testService)
+
+// Technical test services
 export const testService = {
   createTest: (applicationId) => API.post(`/tests/applications/${applicationId}/create`),
   getTest: (testId) => API.get(`/tests/${testId}`),
   startTest: (testId) => API.patch(`/tests/${testId}/start`),
   submitTest: (testId, answers) => API.post(`/tests/${testId}/submit`, { answers }),
+  getTestResults: (testId) => API.get(`/tests/${testId}/results`),
 };
-
 export default API;

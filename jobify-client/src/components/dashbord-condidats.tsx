@@ -1,3 +1,4 @@
+// Mise à jour de src/components/dashbord-condidats.tsx
 import React, { useState } from 'react';
 import '../Styles/dashbord-condidats.css';
 import jobify_logo from '../assets/jobify-logo.svg';
@@ -5,11 +6,12 @@ import ProfileSettings from './ProfileSettings';
 import Offers from '../components/Offers';
 import Profile from '../components/Profile';
 import MainContent from '../components/MainContent';
+import MyApplications from '../components/MyApplications';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const CandidateDashboard = () => {
-  const [activeTab, setActiveTab] = useState<'home' | 'offers' | 'profile' | 'settings'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'offers' | 'profile' | 'applications' | 'settings'>('home');
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -26,6 +28,8 @@ const CandidateDashboard = () => {
         return <Offers />;
       case 'profile':
         return <Profile />;
+      case 'applications':
+        return <MyApplications />;
       case 'settings':
         return <ProfileSettings />;
       default:
@@ -41,6 +45,7 @@ const CandidateDashboard = () => {
         <ul className="sidebar-menu">
           <li onClick={() => setActiveTab('home')} className={activeTab === 'home' ? 'active' : ''}>🏠 Accueil</li>
           <li onClick={() => setActiveTab('offers')} className={activeTab === 'offers' ? 'active' : ''}>📄 Offres</li>
+          <li onClick={() => setActiveTab('applications')} className={activeTab === 'applications' ? 'active' : ''}>📋 Mes candidatures</li>
           <li onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>👤 Profil</li>
           <li onClick={() => setActiveTab('settings')} className={activeTab === 'settings' ? 'active' : ''}>⚙️ Paramètres</li>
           <li className="logout" onClick={handleLogout}>🚪 Déconnexion</li>

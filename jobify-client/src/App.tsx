@@ -1,3 +1,5 @@
+// Mise à jour de src/App.tsx avec les nouveaux composants
+
 import './Styles/App.css';
 import JobifyAIHome from './components/JobifyAIHome';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -6,6 +8,13 @@ import Dashboard from './components/Dashbord-recruiters';
 import CandidateDashboard from './components/dashbord-condidats';
 import ProfileSettings from './components/ProfileSettings';
 import ProtectedRoute from './components/ProtectedRoute';
+import JobListing from './components/JobListing';
+import JobDetailPage from './components/JobDetailsPage';
+import CreateJobForm from './components/CreateJobForm';
+import MyApplications from './components/MyApplications';
+import ApplicationDetailPage from './components/JobDetailsPage';
+import TechnicalTestPage from './components/TechnicalTestPage';
+import TestResultsPage from './components/TestResultPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -16,6 +25,8 @@ function App() {
       <Routes>
         <Route path="/" element={<JobifyAIHome />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/jobs" element={<JobListing />} />
+        <Route path="/jobs/:id" element={<JobDetailPage />} />
 
         {/* Routes protégées pour recruteurs */}
         <Route
@@ -23,6 +34,22 @@ function App() {
           element={
             <ProtectedRoute requiredRole="recruiter">
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-job"
+          element={
+            <ProtectedRoute requiredRole="recruiter">
+              <CreateJobForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/applications/:id"
+          element={
+            <ProtectedRoute requiredRole="recruiter">
+              <ApplicationDetailPage />
             </ProtectedRoute>
           }
         />
@@ -41,6 +68,30 @@ function App() {
           element={
             <ProtectedRoute requiredRole="candidate">
               <ProfileSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-applications"
+          element={
+            <ProtectedRoute requiredRole="candidate">
+              <MyApplications />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/technical-test/:id"
+          element={
+            <ProtectedRoute requiredRole="candidate">
+              <TechnicalTestPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/test-results/:id"
+          element={
+            <ProtectedRoute requiredRole="candidate">
+              <TestResultsPage />
             </ProtectedRoute>
           }
         />
