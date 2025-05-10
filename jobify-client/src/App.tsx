@@ -1,20 +1,20 @@
 // Mise à jour de src/App.tsx avec les nouveaux composants
 
 import './Styles/App.css';
-import JobifyAIHome from './components/JobifyAIHome';
+import JobifyAIHome from './Pages/JobifyAIHome';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AuthPage from './components/AuthPage';
-import Dashboard from './components/Dashbord-recruiters';
-import CandidateDashboard from './components/dashbord-condidats';
+import AuthPage from './Pages/AuthPage';
+import Dashboard from './Pages/Dashbord-recruiters';
+import CandidateDashboard from './Pages/dashbord-condidats';
 import ProfileSettings from './components/ProfileSettings';
 import ProtectedRoute from './components/ProtectedRoute';
-import JobListing from './components/JobListing';
-import JobDetailPage from './components/JobDetailsPage';
+import JobOffers from './components/Offers';
+import JobDetailPage from './Pages/JobDetailsPage';
 import CreateJobForm from './components/CreateJobForm';
 import MyApplications from './components/MyApplications';
-import ApplicationDetailPage from './components/JobDetailsPage';
-import TechnicalTestPage from './components/TechnicalTestPage';
-import TestResultsPage from './components/TestResultPage';
+import ApplicationDetailPage from './Pages/JobDetailsPage';
+import TechnicalTestPage from './Pages/TechnicalTestPage';
+import TestResultsPage from './Pages/TestResultPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,8 +25,8 @@ function App() {
       <Routes>
         <Route path="/" element={<JobifyAIHome />} />
         <Route path="/auth" element={<AuthPage />} />
-        <Route path="/jobs" element={<JobListing />} />
-        <Route path="/jobs/:id" element={<JobDetailPage />} />
+        <Route path="/Offers" element={<JobOffers />} />
+        <Route path="/Offers/:id" element={<JobDetailPage />} />
 
         {/* Routes protégées pour recruteurs */}
         <Route

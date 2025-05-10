@@ -34,28 +34,26 @@ const CreateJobForm: React.FC = () => {
     setLoading(true);
 
     try {
-      // Convertir les champs de texte séparés par des virgules en tableaux
-      const jobData: { title: string; description: string; requirements: string[]; salary?: number; technicalSkills: string[]; testCriteria: { topics: string[]; duration: number; numberOfQuestions: number }; status: string } = {
-        ...formData,
+      // Convert comma-separated text fields to arrays
+      const jobData = {
         title: formData.title,
+        company: formData.company,
         description: formData.description,
-        requirements: formData.requirements.split(',').map(req => req.trim()),
-        technicalSkills: formData.technicalSkills.split(',').map(skill => skill.trim()),
+        location: formData.location,
+        requirements: formData.requirements ? formData.requirements.split(',').map(req => req.trim()) : [],
+        technicalSkills: formData.technicalSkills ? formData.technicalSkills.split(',').map(skill => skill.trim()) : [],
         status: formData.status,
         testCriteria: {
-          topics: formData.topics.split(',').map(topic => topic.trim()),
+          topics: formData.topics ? formData.topics.split(',').map(topic => topic.trim()) : [],
           duration: formData.duration,
           numberOfQuestions: formData.numberOfQuestions
         }
       };
 
-      // Supprimer les champs non nécessaires pour l'API
-      const { topics, ...jobDataWithoutTopics } = formData;
-
       await jobService.createJob(jobData);
       toast.success('Offre d\'emploi créée avec succès!');
       
-      // Réinitialiser le formulaire
+      // Reset form
       setFormData({
         title: '',
         company: '',
@@ -69,6 +67,7 @@ const CreateJobForm: React.FC = () => {
         status: 'active'
       });
     } catch (err: any) {
+      console.error('Error creating job:', err);
       toast.error(err.response?.data?.message || 'Erreur lors de la création de l\'offre');
     } finally {
       setLoading(false);

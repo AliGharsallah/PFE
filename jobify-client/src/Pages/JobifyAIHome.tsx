@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../styles/JobifyAIHome.css";
-import Card from "./Card";
+import Card from "../components/Card";
 import { useNavigate } from 'react-router-dom';
-import Button from "./Button";
-import Navbar from './Navbar';
+import Button from "../components/Button";
+import Navbar from '../components/Navbar';
 import '../Styles/Card.css';
 import UIUX from '../assets/uiux.jpg';
 import CHEFP from '../assets/projectmanager.jpg';

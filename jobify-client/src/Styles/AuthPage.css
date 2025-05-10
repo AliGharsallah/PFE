@@ -1,14 +1,37 @@
 .auth-page-div {
+  position: relative;
   font-family: 'Poppins', sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(45deg, #e6e6e60d, #08d2f5, #ffcbcb00, #4e48f2db, #1de2dc);
-  background-size: 400% 400%;
-  animation: borderAnimation 15s cubic-bezier(.79,.14,.15,.86) infinite;
+  overflow: hidden;
 }
+.back-home-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  background-color: #28295f;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+#plexus-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+  height: auto;
+  width: 100%;
+  background-color: #28295f;
+}
+
 
 .container {
   background-color: #ffffff;
@@ -29,15 +52,16 @@
 }
 
 .left-panel {
-  background-color: #5E62E4;
+  background-color: #00000069;
   color: white;
   text-align: center;
   position: relative;
+  z-index: 5;
 }
 
 .left-panel h2 {
   position: relative;
-  color: #ffffffdd;
+  color: #6365e6;
   font-size: 1.1rem;
   z-index: 2;
   margin-top: -80px;
@@ -136,26 +160,6 @@ button:hover {
   z-index: 1;
 }
 
-.blob {
-  position: absolute;
-  width: 1000px;
-  height: 1000px;
-  background: #f07171;
-  border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
-  animation: blob-animation 8s ease-in-out infinite;
-  opacity: 0.2;
-  filter: blur(80px);
-  z-index: 0;
-}
-
-.blob:nth-child(2) {
-  width: 500px;
-  height: 700px;
-  background: #fff;
-  animation-delay: 4s;
-  opacity: 0.15;
-  filter: blur(80px);
-}
 
 .logo-container {
   z-index: 2;

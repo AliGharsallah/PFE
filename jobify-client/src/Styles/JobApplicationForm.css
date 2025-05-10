@@ -16,6 +16,7 @@
   
   .job-application-form .form-group {
     margin-bottom: 16px;
+    width: 70%;
   }
   
   .job-application-form label {
@@ -49,7 +50,7 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 100%;
+    width: 80%;
   }
   
   .job-application-form .apply-button:hover {

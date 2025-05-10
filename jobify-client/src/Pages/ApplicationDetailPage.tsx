@@ -8,14 +8,38 @@ import '../Styles/ApplicationDetailPage.css';
 const ApplicationDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [application, setApplication] = useState<any>(null);
+  interface Application {
+    candidate: {
+      name: string;
+      email: string;
+    };
+    status: string;
+    createdAt: string;
+    job: {
+      title: string;
+      company: string;
+      description: string;
+    };
+    aiAnalysis: {
+      score: number;
+      feedback: string;
+      missingSkills: string[];
+    };
+    testResults?: {
+      score: number;
+      completedAt: string;
+    };
+    resume: string;
+  }
+
+  const [application, setApplication] = useState<Application | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     const fetchApplication = async () => {
       if (!id) return;
-
+      // Removed invalid line referencing 'newStatus'
       try {
         setLoading(true);
         const response = await applicationService.getApplication(id);
@@ -39,7 +63,7 @@ const ApplicationDetailPage: React.FC = () => {
       await applicationService.updateApplicationStatus(id, newStatus);
       
       // Mettre à jour l'état local
-      setApplication(prev => ({ ...prev, status: newStatus }));
+      setApplication(prev => prev ? { ...prev, status: newStatus } : prev);
       
       toast.success(`Statut de la candidature mis à jour: ${newStatus}`);
     } catch (err) {

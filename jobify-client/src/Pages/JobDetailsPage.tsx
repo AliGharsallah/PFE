@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { jobService } from '../services/api';
 import { toast } from 'react-toastify';
-import JobApplicationForm from '../components/TestResultPage';
+import JobApplicationForm from '../components/JobApplicationForm'; 
 import { useAuth } from '../context/AuthContext';
 import '../Styles/JobDetailPage.css';
 
