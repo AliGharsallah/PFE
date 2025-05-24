@@ -1,0 +1,14 @@
+@startuml
+|Candidat|
+start
+:S'inscrire;
+:Se connecter;
+partition "Processus candidat" {
+  :Rechercher des offres;
+  :Soumettre une candidature;
+  :Passer le test technique;
+  :Passer l'entretien avec le bot;
+  :Consulter les résultats;
+}
+stop
+@enduml

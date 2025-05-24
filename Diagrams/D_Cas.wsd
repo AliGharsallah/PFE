@@ -1,0 +1,102 @@
+@startuml
+' Diagramme de cas d'utilisation UML avec Admin
+
+' Acteurs
+:Recruteur: as Recruteur
+:Candidat: as Candidat
+:Admin: as Admin
+:Système IA: as IA << system >>
+
+' Cas d'utilisation système
+rectangle "Système de Recrutement" {
+  ' Cas d'utilisation Admin
+  (Gérer les utilisateurs) as UC22
+  (Configurer les paramètres système) as UC23
+  (Configurer les modèles d'IA) as UC24
+  (Consulter les statistiques) as UC25
+  (Gérer le contenu de la plateforme) as UC26
+  (Superviser les activités) as UC27
+  (Générer des rapports d'analyse) as UC28
+  
+  ' Cas d'utilisation Recruteur
+  (Créer un compte) as UC1
+  (Se connecter) as UC2
+  (Créer une offre d'emploi) as UC3
+  (Gérer les offres publiées) as UC4
+  (Consulter les candidatures) as UC5
+  (Consulter les résultats des tests) as UC6
+  (Sélectionner/Rejeter un candidat) as UC7
+  
+  ' Cas d'utilisation Candidat
+  (Créer un compte) as UC8
+  (Se connecter) as UC9
+  (Rechercher des offres) as UC10
+  (Postuler à une offre) as UC11
+  (Passer le test technique) as UC12
+  (Passer l'entretien avec le bot) as UC13
+  (Consulter les résultats) as UC14
+  
+  ' Cas d'utilisation Système IA
+  (Générer un test technique) as UC15
+  (Générer un test psychologique) as UC16
+  (Analyser un CV) as UC17
+  (Mener un entretien vidéo) as UC18
+  (Analyser les réponses vidéo) as UC19
+  (Évaluer les compétences techniques) as UC20
+  (Évaluer le profil psychologique) as UC21
+}
+
+' Relations Admin
+Admin -- UC22
+Admin -- UC23
+Admin -- UC24
+Admin -- UC25
+Admin -- UC26
+Admin -- UC27
+Admin -- UC28
+Admin -- UC1
+Admin -- UC2
+
+' Relations Recruteur
+Recruteur -- UC1
+Recruteur -- UC2
+Recruteur -- UC3
+Recruteur -- UC4
+Recruteur -- UC5
+Recruteur -- UC6
+Recruteur -- UC7
+
+' Relations Candidat
+Candidat -- UC8
+Candidat -- UC9
+Candidat -- UC10
+Candidat -- UC11
+Candidat -- UC12
+Candidat -- UC13
+Candidat -- UC14
+
+' Relations Système IA
+IA -- UC15
+IA -- UC16
+IA -- UC17
+IA -- UC18
+IA -- UC19
+IA -- UC20
+IA -- UC21
+
+' Relations d'inclusion
+UC3 ..> UC15 : << include >>
+UC11 ..> UC17 : << include >>
+UC11 ..> UC15 : << include >>
+UC11 ..> UC16 : << include >>
+UC13 ..> UC18 : << include >>
+UC18 ..> UC19 : << include >>
+UC12 ..> UC20 : << include >>
+UC13 ..> UC21 : << include >>
+UC23 ..> UC24 : << include >>
+UC25 ..> UC28 : << include >>
+
+' Héritage/Généralisation
+UC8 --|> UC1 : << extends >>
+UC9 --|> UC2 : << extends >>
+@enduml

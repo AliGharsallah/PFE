@@ -1,0 +1,531 @@
+/* JobifyAIHome.css */
+
+/* Styles de base du conteneur */
+.jobify-container {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #1e293b;
+  background: white;
+}
+
+/* Hero section - styles conservés */
+.jobify-hero {
+  text-align: left;
+  padding: 9rem 1rem;
+  padding-left: 7rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  position: relative;
+  z-index: 77;
+
+  color: #ffffff;
+  font-size: 2rem;
+  line-height: 1.5;
+  font-weight: 600;
+
+  backdrop-filter: brightness(0.9);
+}
+
+.jobify-hero::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  border-radius: -91%;
+  background: linear-gradient(45deg, #1f1c1d9c, #000000ad, #ffcbcb00, #4e48f2ba, #88b5ffb0);
+  background-size: 400% 400%;
+  animation: borderAnimation 15s cubic-bezier(.79,.14,.15,.86) infinite;
+  z-index: -1;
+}
+
+.jobify-hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.jobify-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4rem;
+}
+
+/* ----- FEATURES SECTION - NOUVEAU DESIGN ----- */
+.jobify-features-section {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+  overflow: hidden;
+}
+
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.features-heading {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  color: #1e293b;
+  position: relative;
+}
+
+.features-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  border-radius: 2px;
+}
+
+.features-carousel {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 1rem 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  transition: transform 0.5s ease;
+}
+
+.feature-card {
+  width: 280px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  z-index: 1;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  z-index: 1;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
+}
+
+.feature-icon {
+  background: rgba(239, 246, 255, 0.7);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  border: 4px solid rgba(79, 70, 229, 0.15);
+}
+
+.feature-icon img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.feature-description {
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2.5rem;
+  gap: 1rem;
+}
+
+.control-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #ffffff;
+  color: #4f46e5;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
+  transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+  background: #4f46e5;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.carousel-indicators {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  width: 30px;
+  border-radius: 5px;
+  background: #4f46e5;
+}
+
+/* ----- BENEFITS SECTION - NOUVEAU DESIGN ----- */
+.jobify-benefits-section {
+  padding: 6rem 0;
+  background: #ffffff;
+}
+
+.benefits-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.benefits-heading {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 4rem;
+  color: #1e293b;
+  position: relative;
+}
+
+.benefits-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  border-radius: 2px;
+}
+
+.benefits-grid {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.benefit-card {
+  flex: 1;
+  min-width: 300px;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #f1f5f9;
+}
+
+.benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(226, 232, 240, 0.3) 0%, rgba(239, 246, 255, 0.3) 100%);
+  z-index: -1;
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.card-icon {
+  flex-shrink: 0;
+  background: rgba(239, 246, 255, 0.7);
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+.card-header h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.benefit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.benefit-list li {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.5);
+  font-size: 1.125rem;
+  color: #334155;
+}
+
+.benefit-list li:last-child {
+  border-bottom: none;
+}
+
+.benefit-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(79, 70, 229, 0.1);
+  color: #4f46e5;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.benefit-action {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.benefit-action:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.3);
+}
+
+.candidates .card-icon, .candidates .benefit-check {
+  background: rgba(79, 70, 229, 0.1);
+}
+
+.recruiters .card-icon, .recruiters .benefit-check {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.candidates .benefit-action {
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+}
+
+.recruiters .benefit-action {
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+}
+
+/* CTA section */
+.jobify-cta {
+  background: #eff6ff;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.jobify-cta h2 {
+  font-size: 2rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.cta-buttons .primary {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.cta-buttons .outline {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: #4f46e5;
+  border: 2px solid #4f46e5;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-buttons .primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.3);
+}
+
+.cta-buttons .outline:hover {
+  background: rgba(79, 70, 229, 0.05);
+  transform: translateY(-3px);
+}
+
+/* Footer */
+.jobify-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background: #02122b;
+  font-size: 0.9rem;
+}
+
+.footer-links a {
+  margin-right: 1.25rem;
+  color: #cbccce;
+  text-decoration: none;
+}
+
+.footer-lang a {
+  margin-left: 0.5rem;
+  color: linear-gradient(90deg, #4f46e5, #6366f1);
+  font-weight: 600;
+}
+
+
+
+/* Responsivité */
+@media (max-width: 1024px) {
+  .features-heading, .benefits-heading {
+    font-size: 2.2rem;
+  }
+  
+  .benefits-grid {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .jobify-hero {
+    padding: 6rem 1rem;
+    text-align: center;
+    padding-left: 1rem;
+  }
+  
+  .hero-buttons {
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  .features-heading, .benefits-heading {
+    font-size: 2rem;
+  }
+  
+  .benefit-card {
+    padding: 2rem;
+    min-width: 100%;
+  }
+  
+  .card-header h3 {
+    font-size: 1.5rem;
+  }
+  
+  .benefit-list li {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .jobify-hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .carousel-controls {
+    flex-direction: column;
+  }
+  
+  .benefit-card {
+    padding: 1.5rem;
+  }
+  
+  .card-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .card-header h3 {
+    font-size: 1.25rem;
+  }
+  
+  .jobify-footer {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}

@@ -1,0 +1,101 @@
+@startuml
+' Diagramme de composants/déploiement UML avec Admin
+
+package "FRONTEND (React)" {
+  [Login / Register] as A1
+  [Dashboard Admin] as A0
+  [Créer une offre] as A2
+  [Gérer les offres publiées] as A3
+  [Postuler à une offre] as A4
+  [Dashboard Recruteur / Candidat] as A5
+  [Résultats des tests] as A6
+  [Configuration Système] as A7
+  [Gestion Utilisateurs] as A8
+  [Statistiques Générales] as A9
+}
+
+package "BACKEND (Node.js + Express)" {
+  [/api/auth] as B1
+  [/api/admin] as B0
+  [/api/jobs] as B2
+  [/api/applications] as B3
+  [/api/users] as B9
+  [/api/stats] as B10
+  [/api/config] as B11
+  [generateTechnicalTest()] as B4
+  [generatePsychologicalTest()] as B5
+  [startBotInterview()] as B6
+  [analyzeVideoCall()] as B7
+  [analyzeResume()] as B8
+}
+
+package "IA Locale (Ollama)" {
+  [modèle CodeLlama - Test Technique] as D1
+  [modèle LLaMA3 - Analyse Psychique] as D2
+}
+
+package "IA Bot Video" {
+  [Bot vidéo pose des questions] as E1
+  [Détection émotionnelle] as E2
+  [Analyse linguistique] as E3
+  [Détection perturbations / délais] as E4
+}
+
+database "DB (MongoDB)" {
+  [Users] as C1
+  [Jobs] as C2
+  [Applications] as C3
+  [Résultats Tests] as C4
+  [Config Système] as C5
+  [Logs] as C6
+}
+
+' Connexions Admin
+A0 --> B0
+B0 --> C1
+B0 --> C2
+B0 --> C3
+B0 --> C4
+B0 --> C5
+B0 --> C6
+A7 --> B11
+B11 --> C5
+A8 --> B9
+B9 --> C1
+A9 --> B10
+B10 --> C1
+B10 --> C2
+B10 --> C3
+B10 --> C4
+
+' Connexions standard
+A1 --> B1
+B1 --> C1
+A2 --> B2
+B2 --> C2
+A3 --> B2
+A4 --> B3
+B3 --> C3
+A5 --> B3
+A6 --> C4
+
+' Test technique
+B2 --> B4
+B4 --> D1
+B3 --> B8
+B8 --> D1
+
+' Test psychique
+B3 --> B5
+B5 --> D2
+B5 --> B6
+B6 --> E1
+B6 --> B7
+B7 --> E2
+B7 --> E3
+B7 --> E4
+B7 --> C4
+
+' Liaison candidature complète
+B3 --> C4
+@enduml

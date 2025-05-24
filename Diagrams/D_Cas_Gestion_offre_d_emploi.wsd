@@ -1,0 +1,25 @@
+@startuml   
+left to right direction
+actor "Recruteur" as Recruteur
+
+rectangle "Gestion d'une offre d'emploi" {
+  usecase "Créer une offre d'emploi" as UC1
+  usecase "Publier l'offre" as UC2
+  usecase "Consulter les candidatures" as UC3
+  usecase "Réviser les résultats des tests" as UC4
+  usecase "Prendre une décision (Sélectionner/Rejeter)" as UC5
+}
+
+Recruteur --> UC1
+Recruteur --> UC2
+Recruteur --> UC3
+Recruteur --> UC4
+Recruteur --> UC5
+
+UC1 ..> UC2 : << include >>
+UC3 ..> UC4 : << include >>
+UC4 ..> UC5 : << include >>
+
+note "Précondition: L'utilisateur est authentifié en tant que recruteur" as N1
+note "Postcondition: Les candidats sont évalués et une décision est prise" as N2
+@enduml

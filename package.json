@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@swc/cli": "^0.7.3",
+    "@swc/core": "^1.11.24",
+    "eslint-plugin-react-dom": "^1.49.0",
+    "eslint-plugin-react-x": "^1.49.0"
+  }
+}

@@ -1,0 +1,239 @@
+/* Reports.css */
+
+.reports-container {
+  width: 100%;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+}
+
+.subsection-title {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.form-paper, .reports-list-paper, .scheduled-reports-paper {
+  padding: 1.5rem !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+  height: 100% !important;
+}
+
+.form-container {
+  margin-top: 1rem;
+}
+
+.form-field {
+  margin-bottom: 1rem !important;
+}
+
+.type-description {
+  color: #7f8c8d !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 1rem !important;
+  padding: 0.5rem !important;
+  background-color: #f8f9fa !important;
+  border-radius: 4px !important;
+  border-left: 3px solid #3498db !important;
+}
+
+.select-icon {
+  margin-right: 0.5rem;
+  color: #7f8c8d !important;
+}
+
+.action-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.generate-button, .add-scheduled-button {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.reports-list {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.report-item {
+  padding: 1rem 0.5rem !important;
+}
+
+.report-icon {
+  color: #3498db !important;
+}
+
+.report-description {
+  display: block;
+  margin-bottom: 0.5rem !important;
+  color: #7f8c8d !important;
+}
+
+.report-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.report-date {
+  display: flex !important;
+  align-items: center !important;
+  color: #7f8c8d !important;
+}
+
+.report-date svg {
+  font-size: 0.9rem !important;
+  margin-right: 0.25rem !important;
+}
+
+.report-size {
+  color: #7f8c8d !important;
+}
+
+.format-chip {
+  background-color: #f1f2f6 !important;
+  border: 1px solid #dfe4ea !important;
+  color: #2f3542 !important;
+  font-weight: 500 !important;
+  height: 24px !important;
+}
+
+.download-button {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  padding: 0.25rem 0.75rem !important;
+  margin-left: 1rem !important;
+}
+
+.list-divider {
+  margin: 0.5rem 0 !important;
+}
+
+.empty-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.scheduled-reports-container {
+  margin-top: 1.5rem;
+}
+
+.scheduled-card {
+  margin-bottom: 1rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03) !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+}
+
+.scheduled-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.scheduled-title {
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+}
+
+.scheduled-description {
+  color: #7f8c8d !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.scheduled-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.status-chip {
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  height: 24px !important;
+}
+
+.status-active {
+  background-color: #2ecc71 !important;
+  color: white !important;
+}
+
+.status-inactive {
+  background-color: #e74c3c !important;
+  color: white !important;
+}
+
+.info-text {
+  color: #7f8c8d !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.custom-options-title {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.75rem !important;
+  color: #2c3e50 !important;
+}
+
+/* Responsive design */
+@media (max-width: 960px) {
+  .form-paper, .reports-list-paper {
+    height: auto !important;
+    margin-bottom: 1.5rem;
+  }
+  
+  .action-container {
+    justify-content: center;
+  }
+  
+  .generate-button, .add-scheduled-button {
+    width: 100%;
+  }
+  
+  .download-button {
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .report-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .report-item {
+    flex-direction: column;
+  }
+  
+  .download-button {
+    margin-left: 0 !important;
+    margin-top: 1rem !important;
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,67 @@
+@startuml
+actor Administrateur
+participant "Interface Admin" as AdminUI
+participant "Service de Configuration" as ConfigService
+participant "Service d'IA" as IAService
+participant "Modèle CodeLlama" as CodeLlama
+participant "Modèle LLaMA3" as LLaMA3
+participant "Modèle IA Bot Vidéo" as IABotVideo
+participant "Base de Données" as DB
+
+Administrateur -> AdminUI: Configurer modèles d'IA
+AdminUI -> ConfigService: configurer(paramètres)
+ConfigService -> IAService: initialiserModèles(paramètres)
+IAService -> CodeLlama: configurer(paramètresTechniques)
+IAService -> LLaMA3: configurer(paramètresPsychologiques)
+IAService -> IABotVideo: configurer(paramètresAnalyse)
+IAService -> DB: enregistrerConfiguration()
+IAService --> ConfigService: confirmation
+ConfigService --> AdminUI: modèles configurés
+AdminUI --> Administrateur: configuration terminée
+
+note right of Administrateur: Flux d'analyse d'un CV
+
+IAService -> CodeLlama: analyserCV(cv, offreID)
+CodeLlama -> CodeLlama: extraireCompétences()
+CodeLlama -> CodeLlama: évaluerExpérience()
+CodeLlama --> IAService: résultats d'analyse
+IAService -> DB: enregistrerAnalyseCV()
+
+note right of Administrateur: Flux de génération de test
+
+IAService -> CodeLlama: générerTestTechnique(offreID)
+CodeLlama -> CodeLlama: identifierCompétencesClés()
+CodeLlama -> CodeLlama: générerQuestions()
+CodeLlama --> IAService: test technique
+IAService -> LLaMA3: générerTestPsychologique(offreID)
+LLaMA3 -> LLaMA3: identifierProfilRecherché()
+LLaMA3 -> LLaMA3: générerQuestions()
+LLaMA3 --> IAService: test psychologique
+IAService -> DB: enregistrerTests()
+
+note right of Administrateur: Flux d'analyse d'entretien
+
+IAService -> IABotVideo: analyserEntretien(enregistrement)
+IABotVideo -> IABotVideo: détecterÉmotions()
+IABotVideo -> IABotVideo: analyserLangage()
+IABotVideo -> IABotVideo: détecterAnomalies()
+IABotVideo --> IAService: résultat d'analyse
+IAService -> IAService: intégrerRésultats()
+IAService -> IAService: générerRapportFinal()
+IAService -> DB: enregistrerRapport()
+
+Administrateur -> AdminUI: Consulter performances système
+AdminUI -> ConfigService: obtenirStatistiques()
+ConfigService -> DB: requêteStatistiques()
+DB --> ConfigService: données statistiques
+ConfigService --> AdminUI: tableau de bord
+AdminUI --> Administrateur: statistiques affichées
+
+Administrateur -> AdminUI: Optimiser paramètres
+AdminUI -> ConfigService: optimiserParametres(ajustements)
+ConfigService -> IAService: mettreÀJourConfiguration()
+IAService -> DB: enregistrerAjustements()
+IAService --> ConfigService: confirmation
+ConfigService --> AdminUI: paramètres mis à jour
+AdminUI --> Administrateur: optimisation confirmée
+@enduml

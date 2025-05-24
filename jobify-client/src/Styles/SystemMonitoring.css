@@ -1,0 +1,137 @@
+/* SystemMonitoring.css */
+
+.system-monitoring {
+  padding: 20px;
+  background-color: #f9fafb;
+  font-family: 'Roboto', sans-serif;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.status-chip {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.status-chip.online {
+  background-color: #e0f7fa;
+  color: #00796b;
+}
+
+.status-chip.warning {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.status-chip.error {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.metrics-container {
+  margin-top: 20px;
+}
+
+.metrics-card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.metrics-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.metrics-icon {
+  margin-right: 16px;
+  font-size: 32px;
+  color: #1976d2;
+}
+
+.metrics-content h6 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.metrics-content p {
+  margin: 4px 0 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.chart-container {
+  height: 300px;
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.services-table-container {
+  margin-top: 30px;
+}
+
+.logs-section {
+  margin-top: 30px;
+}
+
+.logs-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.logs-table {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.logs-table th {
+  font-weight: bold;
+  background-color: #f1f1f1;
+}
+
+.logs-table td, .logs-table th {
+  padding: 12px;
+}
+
+.logs-level-error {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.logs-level-warning {
+  color: #f57c00;
+  font-weight: bold;
+}
+
+.logs-level-info {
+  color: #1976d2;
+  font-weight: bold;
+}
+
+.refresh-button {
+  background-color: #1976d2;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover {
+  background-color: #1565c0;
+}

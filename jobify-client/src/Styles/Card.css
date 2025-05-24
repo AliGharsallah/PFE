@@ -1,0 +1,26 @@
+.feature-card {
+background-color: #ffffff;
+border: 1px solid #e0e0e0;
+border-radius: 12px;
+padding: 24px;
+width: 300px;
+text-align: center;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+transition: transform 0.2s ease;
+margin: 1rem;
+}
+
+.feature-card:nth-child(1)::before {
+    
+  
+}
+
+.feature-card:nth-child(2)::before {
+}
+
+.feature-card:nth-child(3)::before {
+}
+
+.feature-card:nth-child(4)::before {
+}
+

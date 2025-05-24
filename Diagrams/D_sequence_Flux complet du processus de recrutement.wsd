@@ -1,0 +1,70 @@
+@startuml
+actor Administrateur
+actor Recruteur
+actor Candidat
+participant "Système" as System
+participant "IA" as AI
+participant "Base de Données" as DB
+
+== Configuration Initiale ==
+
+Administrateur -> System: Configurer paramètres
+System -> AI: Initialiser modèles d'IA
+AI --> System: Modèles initialisés
+System --> Administrateur: Configuration terminée
+
+== Création d'une offre ==
+
+Recruteur -> System: Créer offre d'emploi
+System -> DB: Enregistrer offre
+DB --> System: Offre enregistrée
+System --> Recruteur: Confirmation
+
+== Candidature ==
+
+Candidat -> System: Soumettre candidature
+System -> AI: Analyser CV
+AI -> AI: Évaluer correspondance
+AI --> System: Score initial
+System -> AI: Générer tests
+AI --> System: Tests générés
+System --> Candidat: Instructions tests
+
+Candidat -> System: Passer tests
+System -> AI: Évaluer réponses
+AI -> AI: Analyser compétences
+AI --> System: Résultats tests
+
+Candidat -> System: Passer entretien bot
+System -> AI: Analyser entretien
+AI -> AI: Détecter émotions/langage
+AI -> AI: Intégrer résultats
+AI -> AI: Générer rapport
+AI --> System: Rapport complet
+System -> DB: Enregistrer résultats
+System --> Candidat: Confirmation
+
+== Évaluation et décision ==
+
+Recruteur -> System: Consulter candidatures
+System -> DB: Récupérer données
+DB --> System: Candidatures et rapports
+System --> Recruteur: Présentation résultats
+
+Recruteur -> System: Prendre décision
+System -> DB: Enregistrer décision
+System --> Candidat: Notification décision
+System --> Recruteur: Confirmation
+
+== Surveillance et optimisation ==
+
+Administrateur -> System: Analyser performances
+System -> DB: Extraire statistiques
+DB --> System: Données d'utilisation
+System --> Administrateur: Tableau de bord
+
+Administrateur -> System: Optimiser paramètres
+System -> AI: Mettre à jour configuration
+AI --> System: Confirmation
+System --> Administrateur: Optimisation terminée
+@enduml

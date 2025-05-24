@@ -1,0 +1,18 @@
+@startuml
+|Admin|
+start
+fork
+  :Surveiller les performances du système;
+fork again
+  :Générer des rapports statistiques;
+end fork
+
+fork
+  :Analyser les données de recrutement;
+  :Optimiser les paramètres du système;
+fork again
+  :Gérer les problèmes techniques;
+  :Assurer la maintenance;
+end fork
+stop
+@enduml

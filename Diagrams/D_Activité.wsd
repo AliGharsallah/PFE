@@ -1,0 +1,99 @@
+@startuml
+' Diagramme d'activité UML avec Admin
+
+|Admin|
+start
+:Se connecter au système;
+
+|Admin|
+partition "Configuration initiale" {
+  :Configurer les paramètres du système;
+  :Configurer les modèles d'IA;
+  :Définir les seuils d'évaluation;
+}
+
+|Admin|
+fork
+  :Superviser l'activité de la plateforme;
+fork again
+  :Générer des rapports statistiques;
+end fork
+
+|Recruteur|
+:S'inscrire;
+:Se connecter;
+
+|Recruteur|
+partition "Gestion des offres" {
+  :Créer une offre d'emploi;
+  :Publier l'offre;
+  :Consulter les candidatures;
+  :Réviser les résultats des tests;
+  :Prendre une décision 
+  (Sélectionner/Rejeter);
+}
+
+|Candidat|
+partition "Processus candidat" {
+  :S'inscrire;
+  :Se connecter;
+  :Rechercher des offres;
+  :Soumettre une candidature;
+}
+
+|Système IA|
+fork
+  partition "Analyse initiale" {
+    :Analyser le CV;
+    :Évaluer la correspondance 
+    avec l'offre;
+  }
+fork again
+  partition "Génération de tests" {
+    :Analyser l'offre d'emploi;
+    :Générer un test technique;
+    :Générer un test psychologique;
+  }
+end fork
+
+|Candidat|
+:Passer le test technique;
+:Passer l'entretien avec le bot;
+
+|Système IA|
+partition "Évaluation du candidat" {
+  :Évaluer les compétences techniques;
+  
+  fork
+    :Détecter les émotions;
+  fork again
+    :Analyser le langage;
+  fork again
+    :Détecter les anomalies comportementales;
+  end fork
+  
+  :Intégrer tous les résultats;
+  :Générer un rapport final;
+}
+
+|Admin|
+:Surveiller les performances du système;
+
+|Candidat|
+:Consulter les résultats;
+
+|Recruteur|
+:Réviser le rapport d'évaluation;
+:Prendre une décision finale;
+
+|Admin|
+fork
+  :Analyser les données de recrutement;
+  :Optimiser les paramètres du système;
+fork again
+  :Gérer les problèmes techniques;
+  :Assurer la maintenance;
+end fork
+
+stop
+@enduml

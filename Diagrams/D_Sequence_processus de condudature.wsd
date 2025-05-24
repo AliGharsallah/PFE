@@ -1,0 +1,51 @@
+@startuml
+actor Candidat
+participant "Interface Utilisateur" as UI
+participant "Service de Candidature" as CandidatService
+participant "Service d'Analyse CV" as CVService
+participant "Service de Test" as TestService
+participant "Service d'Entretien" as EntretienService
+participant "Base de Données" as DB
+
+Candidat -> UI: Rechercher offres d'emploi
+UI -> CandidatService: rechercherOffres(critères)
+CandidatService -> DB: requête(critères)
+DB --> CandidatService: résultats
+CandidatService --> UI: liste d'offres
+UI --> Candidat: affiche les offres
+
+Candidat -> UI: Sélectionner une offre
+Candidat -> UI: Soumettre candidature
+UI -> CandidatService: soumettreCandidat(candidatID, offreID, CV)
+CandidatService -> DB: enregistrerCandidature()
+CandidatService -> CVService: analyserCV(CV, offreID)
+CVService --> CandidatService: résultatsAnalyse
+CandidatService -> TestService: générerTestTechnique(offreID, candidatID)
+TestService --> CandidatService: testTechniqueID
+CandidatService -> TestService: générerTestPsychologique(offreID, candidatID)
+TestService --> CandidatService: testPsychologiqueID
+CandidatService --> UI: candidatureID, testsID
+UI --> Candidat: Confirmation et instructions
+
+Candidat -> UI: Passer test technique
+UI -> TestService: soumettreRéponses(testTechniqueID, réponses)
+TestService -> DB: enregistrerRéponses()
+TestService --> UI: confirmationSoumission
+UI --> Candidat: Confirmation
+
+Candidat -> UI: Passer entretien bot
+UI -> EntretienService: démarrerEntretien(candidatID, offreID)
+EntretienService -> EntretienService: poserQuestions()
+EntretienService -> EntretienService: enregistrerRéponses()
+EntretienService -> EntretienService: analyserComportement()
+EntretienService -> DB: enregistrerRésultats()
+EntretienService --> UI: entretienTerminé
+UI --> Candidat: Fin de l'entretien
+
+Candidat -> UI: Consulter résultats
+UI -> CandidatService: obtenirRésultats(candidatureID)
+CandidatService -> DB: requêteRésultats()
+DB --> CandidatService: résultatsCandidature
+CandidatService --> UI: résumé des résultats
+UI --> Candidat: Affichage des résultats
+@enduml

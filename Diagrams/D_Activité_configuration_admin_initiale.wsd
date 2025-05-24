@@ -1,0 +1,12 @@
+@startuml
+|Admin|
+start
+:Se connecter au système;
+|Admin|
+partition "Configuration initiale" {
+  :Configurer les paramètres du système;
+  :Configurer les modèles d'IA;
+  :Définir les seuils d'évaluation;
+}
+stop
+@enduml

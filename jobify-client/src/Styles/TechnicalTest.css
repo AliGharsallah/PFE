@@ -1,0 +1,524 @@
+
+.technical-test-container {
+  max-width: 900px;
+  margin: 40px auto;
+    margin-top: 40px;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: auto;
+
+}
+
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.test-header h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.progress-info {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.timer {
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.timer .running-out {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.test-instructions {
+  text-align: left;
+  line-height: 1.7;
+}
+
+.test-instructions h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.test-instructions p {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.test-instructions ul {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.test-instructions li {
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.start-test-btn {
+  margin-top: 1.5rem;
+  background-color: #1d72b8;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.start-test-btn:hover {
+  background-color: #1664a5;
+}
+
+/* Nouveau layout pour la disposition gauche-centre-droite */
+.test-content-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+  height: calc(100vh - 120px);
+  overflow: hidden;
+}
+
+.center-content {
+  flex: 1;
+  max-width: none;
+  min-width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.keyboard-status.left-hand,
+.keyboard-status.right-hand {
+  flex-shrink: 0;
+  width: 160px;
+  height: fit-content;
+  max-height: 200px;
+}
+
+.keyboard-status.left-hand {
+  order: 2;
+}
+
+.center-content {
+  order: 1;
+}
+
+.keyboard-status.right-hand {
+  order: 3;
+}
+
+/* Styles pour les status des mains */
+.keyboard-status {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  text-align: center;
+}
+
+.hand-status {
+  text-align: center;
+}
+
+.hand-status h3 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.hand-instruction {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: bold;
+}
+
+.keys {
+  display: flex;
+  gap: 0.3rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.key {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.key.pressed {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+  transform: scale(0.95);
+}
+
+/* Styles pour les phases */
+.phase-indicator {
+margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  position: absolute;
+  right: 20%;
+  top: 40%;
+}
+
+.thinking-phase {
+  background-color: #fff3cd;
+  border: 2px solid #ffeaa7;
+}
+
+.answering-phase {
+  background-color: #d1ecf1;
+  border: 2px solid #74b9ff;
+}
+
+.phase-indicator h2 {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.phase-indicator p {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.phase-timer {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0.5rem 0;
+}
+
+.answer-timer {
+  color: #0984e3;
+}
+
+.warning {
+  margin-top: 1rem;
+  color: #e17055;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.success {
+  margin-top: 1rem;
+  color: #00b894;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.danger {
+  margin-top: 1rem;
+  color: #e74c3c;
+  font-weight: bold;
+  font-size: 1rem;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Styles pour la question courante */
+.current-question {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.question-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.question-card h3 {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.question-card p {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  flex-shrink: 0;
+}
+
+.options {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.option {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 50px;
+  flex-shrink: 0;
+}
+
+.option:hover:not(.disabled) {
+  background-color: #f0f8ff;
+  border-color: #3498db;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+}
+
+.option input[type='radio'] {
+  margin-right: 15px;
+  accent-color: #3498db;
+  transform: scale(1.5);
+  cursor: pointer;
+}
+
+.option input[type='radio']:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.option label {
+  font-size: 1rem;
+  color: #2c3e50;
+  cursor: pointer;
+  flex: 1;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.option label.disabled {
+  color: #95a5a6;
+  cursor: not-allowed;
+}
+
+.option.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+}
+
+/* Styles pour la fin du test */
+.test-completion {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.test-completion h2 {
+  color: #28a745;
+  margin-bottom: 1rem;
+}
+
+.test-completion p {
+  color: #555;
+  font-size: 1.1rem;
+}
+
+.test-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.test-actions {
+  text-align: right;
+  margin-top: 2rem;
+}
+
+.submit-test-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submit-test-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.submit-test-btn:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.loading,
+.error-message,
+.test-completed-message {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+  color: #555;
+}
+
+.test-completed-message h2 {
+  color: #27ae60;
+}
+
+.test-completed-message button {
+  margin-top: 1rem;
+  padding: 10px 16px;
+  background-color: #1d72b8;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.test-completed-message button:hover {
+  background-color: #155a8a;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .technical-test-container {
+    padding: 0.5rem;
+  }
+  
+  .test-header {
+    padding: 8px 16px;
+    height: 50px;
+  }
+  
+  .test-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .progress-info {
+    font-size: 1rem;
+  }
+  
+  .test-content-layout {
+    flex-direction: column;
+    height: calc(100vh - 100px);
+    gap: 0.5rem;
+  }
+  
+  .keyboard-status.left-hand,
+  .keyboard-status.right-hand {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    padding: 0.5rem;
+  }
+  
+  .center-content {
+    width: 100%;
+    max-width: none;
+    min-width: auto;
+    flex: 1;
+  }
+  
+  .keys {
+    flex-wrap: wrap;
+    gap: 0.2rem;
+  }
+  
+  .key {
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 0.8rem;
+  }
+  
+  .phase-indicator {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .phase-timer {
+    font-size: 1.5rem;
+  }
+  
+  .question-card {
+    padding: 1rem;
+  }
+  
+  .question-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .question-card p {
+    font-size: 1rem;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .options {
+    gap: 0.5rem;
+  }
+  
+  .option {
+    padding: 0.6rem 0.8rem;
+    min-height: 45px;
+  }
+  
+  .option label {
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  
+  .option input[type='radio'] {
+    transform: scale(1.2);
+    margin-right: 10px;
+  }
+}

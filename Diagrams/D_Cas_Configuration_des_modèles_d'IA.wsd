@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+actor "Admin" as Admin
+
+rectangle "Configuration des modèles d'IA" {
+  usecase "Se connecter au système" as UC1
+  usecase "Accéder aux paramètres des modèles d'IA" as UC2
+  usecase "Configurer les modèles" as UC3
+  usecase "Définir les seuils d'évaluation" as UC4
+  usecase "Tester les configurations" as UC5
+  usecase "Appliquer les modifications" as UC6
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+
+UC2 ..> UC3 : << include >>
+UC3 ..> UC4 : << include >>
+UC5 ..> UC6 : << include >>
+
+note "Le modèle CodeLlama est utilisé pour\ngénérer des tests techniques et\nanalyser les CV" as N1
+note "Le modèle LLaMA3 est utilisé pour\ngénérer des tests psychologiques\net analyser les réponses" as N2
+note "Le modèle IA Bot Vidéo est utilisé pour\ndétecter les émotions, analyser le langage\net détecter les anomalies comportementales" as N3
+
+note "Précondition: L'utilisateur est authentifié en tant qu'administrateur" as N4
+note "Postcondition: Les modèles d'IA sont configurés selon les besoins spécifiques" as N5
+@enduml

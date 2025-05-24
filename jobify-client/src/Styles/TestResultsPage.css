@@ -1,0 +1,87 @@
+/* src/Styles/TestResultsPage.css */
+.test-results-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .test-results-container h1 {
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  .results-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .score-display {
+    margin-bottom: 1.5rem;
+  }
+  
+  .score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 10px solid #4a69bd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 1rem;
+  }
+  
+  .score-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #4a69bd;
+  }
+  
+  .performance-message {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .results-details {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+  
+  .results-message {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #4a69bd;
+    text-align: left;
+  }
+  
+  .results-actions {
+    margin-top: 2rem;
+  }
+  
+  .back-to-dashboard-btn {
+    padding: 1rem 2rem;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .back-to-dashboard-btn:hover {
+    background-color: #3c56a5;
+  }

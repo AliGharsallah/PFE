@@ -1,0 +1,193 @@
+@startuml
+' Diagramme de classes UML avec Admin
+
+' Classes utilisateurs
+abstract class User {
+  +String id
+  +String email
+  +String password
+  +String nom
+  +String prenom
+  +String role
+  +Date dateInscription
+  +login()
+  +register()
+  +updateProfile()
+}
+
+class Admin {
+  +String niveau_acces
+  +Boolean accesTotal
+  +gérerUtilisateurs()
+  +configurerSysteme()
+  +gérerParametresIA()
+  +consulterStatistiques()
+  +gérerContenuPlateforme()
+  +genererRapports()
+  +monitorerSysteme()
+}
+
+class Recruteur {
+  +String entreprise
+  +String poste
+  +creerOffre()
+  +gererOffres()
+  +consulterCandidatures()
+}
+
+class Candidat {
+  +String[] competences
+  +String[] experiences
+  +URL cv
+  +postulerOffre()
+  +passerTest()
+  +passerEntretienBot()
+  +consulterResultats()
+}
+
+' Classes principales
+class Offre {
+  +String id
+  +String titre
+  +String description
+  +String[] competencesRequises
+  +String niveauExperience
+  +Date datePublication
+  +String statut
+  +createOffre()
+  +updateOffre()
+  +deleteOffre()
+  +generateTechnicalTest()
+}
+
+class Candidature {
+  +String id
+  +String offreId
+  +String candidatId
+  +Date datePostulation
+  +String statut
+  +URL cv
+  +submitCandidature()
+  +updateStatut()
+  +analyzeResume()
+}
+
+abstract class Test {
+  +String id
+  +String candidatureId
+  +String type
+  +Date dateCreation
+  +Date datePassage
+  +String statut
+  +genererTest()
+  +evaluerResultat()
+}
+
+class TestTechnique {
+  +String[] questions
+  +String[] reponses
+  +evaluerCompetences()
+}
+
+class TestPsychologique {
+  +String[] questions
+  +Object resultatsAnalyse
+  +demarrerEntretienBot()
+  +analyserEntretien()
+}
+
+class EntretienBot {
+  +String id
+  +Date dateEntretien
+  +String[] questions
+  +Object enregistrement
+  +Object metriquesAnalyse
+  +poserQuestions()
+  +enregistrerReponses()
+  +analyserVideo()
+}
+
+class AnalyseEntretien {
+  +Object detectionsEmotionnelles
+  +Object analyseLinguistique
+  +Object metriquesComportementales
+  +calculerScore()
+  +genererRapport()
+}
+
+class Configuration {
+  +Object parametresSysteme
+  +Object parametresIA
+  +Object seuils_evaluation
+  +updateParametres()
+  +getConfiguration()
+  +reinitialiserDefauts()
+}
+
+class Statistiques {
+  +Object metriquesUtilisation
+  +Object tauxReussite
+  +Object performanceIA
+  +calculerStatistiques()
+  +genererRapports()
+  +exporterDonnees()
+}
+
+' Interfaces IA
+interface IAModele {
+  +String modele
+  +String version
+  +Object parametres
+  +initialiser()
+  +executer()
+}
+
+class CodeLlama {
+  +genererTestTechnique()
+  +evaluerCodeCandidat()
+  +analyserCV()
+}
+
+class LLaMA3 {
+  +genererTestPsychologique()
+  +analyserReponses()
+}
+
+class IABotVideo {
+  +detecterEmotions()
+  +analyserLanguage()
+  +detecterAnomalies()
+}
+
+' Relations
+User <|-- Admin
+User <|-- Recruteur
+User <|-- Candidat
+
+Admin "1" -- "*" User : gère
+Admin "1" -- "*" Offre : supervise
+Admin "1" -- "*" Test : configure
+Admin "1" -- "1" Configuration : administre
+Admin "1" -- "1" Statistiques : consulte
+
+Recruteur "1" -- "*" Offre : crée
+Candidat "1" -- "*" Candidature : soumet
+Offre "1" -- "*" Candidature : reçoit
+Candidature "1" -- "1..2" Test : comprend
+
+Test <|-- TestTechnique
+Test <|-- TestPsychologique
+
+TestPsychologique "1" -- "1" EntretienBot : utilise
+EntretienBot "1" -- "1" AnalyseEntretien : produit
+
+IAModele <|.. CodeLlama
+IAModele <|.. LLaMA3
+IAModele <|.. IABotVideo
+
+TestTechnique -- CodeLlama : utilise
+TestPsychologique -- LLaMA3 : utilise
+EntretienBot -- IABotVideo : utilise
+
+Configuration -- IAModele : paramètre
+@enduml

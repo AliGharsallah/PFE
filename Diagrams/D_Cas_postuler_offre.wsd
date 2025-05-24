@@ -1,0 +1,40 @@
+@startuml
+left to right direction
+actor "Candidat" as Candidat
+actor "Système IA" as IA << system >>
+
+rectangle "Postuler à une offre" {
+  usecase "Rechercher des offres" as UC1
+  usecase "Sélectionner une offre" as UC2
+  usecase "Soumettre une candidature" as UC3
+  usecase "Analyser un CV" as UC4
+  usecase "Générer un test technique" as UC5
+  usecase "Générer un test psychologique" as UC6
+  usecase "Passer le test technique" as UC7
+  usecase "Passer l'entretien avec le bot" as UC8
+  usecase "Évaluer les compétences techniques" as UC9
+  usecase "Évaluer le profil psychologique" as UC10
+  usecase "Consulter les résultats" as UC11
+}
+
+Candidat --> UC1
+Candidat --> UC2
+Candidat --> UC3
+IA --> UC4
+IA --> UC5
+IA --> UC6
+Candidat --> UC7
+Candidat --> UC8
+IA --> UC9
+IA --> UC10
+Candidat --> UC11
+
+UC3 ..> UC4 : << include >>
+UC3 ..> UC5 : << include >>
+UC3 ..> UC6 : << include >>
+UC7 ..> UC9 : << include >>
+UC8 ..> UC10 : << include >>
+
+note "Précondition: L'utilisateur est authentifié en tant que candidat" as N1
+note "Postcondition: La candidature est enregistrée et évaluée" as N2
+@enduml

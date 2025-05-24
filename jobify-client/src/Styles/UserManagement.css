@@ -1,0 +1,156 @@
+/* UserManagement.css */
+
+.user-management-container {
+  width: 100%;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: #2c3e50;
+}
+
+.filter-container {
+  margin-bottom: 1.5rem;
+}
+
+.search-field {
+  margin-right: 1rem;
+}
+
+.add-button {
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.table-container {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+  border-radius: 8px !important;
+  margin-bottom: 1.5rem;
+}
+
+.table-header {
+  background-color: #f5f7fa;
+}
+
+.header-cell {
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+}
+
+.role-chip {
+  border-radius: 50px !important;
+  font-weight: 500 !important;
+}
+
+.role-admin {
+  background-color: #8e44ad !important;
+  color: white !important;
+}
+
+.role-recruteur {
+  background-color: #3498db !important;
+  color: white !important;
+}
+
+.role-candidat {
+  background-color: #2ecc71 !important;
+  color: white !important;
+}
+
+.status-chip {
+  border-radius: 50px !important;
+  font-weight: 500 !important;
+}
+
+.status-actif {
+  background-color: #2ecc71 !important;
+  color: white !important;
+}
+
+.status-inactif {
+  background-color: #e74c3c !important;
+  color: white !important;
+}
+
+.edit-button {
+  color: #3498db !important;
+  padding: 8px !important;
+}
+
+.delete-button {
+  color: #e74c3c !important;
+  padding: 8px !important;
+}
+
+.empty-text {
+  text-align: center !important;
+  padding: 2rem !important;
+  color: #7f8c8d !important;
+}
+
+.dialog-title {
+  background-color: #f5f7fa;
+  padding: 1rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 1.25rem !important;
+}
+
+.dialog-content {
+  padding: 1.5rem !important;
+}
+
+.dialog-actions {
+  padding: 1rem 1.5rem !important;
+}
+
+.form-field {
+  margin-bottom: 1rem !important;
+}
+
+.submit-button {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+}
+
+/* Animation pour les lignes du tableau */
+.MuiTableBody-root .MuiTableRow-root {
+  transition: background-color 0.2s ease;
+}
+
+.MuiTableBody-root .MuiTableRow-hover:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Responsive styles */
+@media (max-width: 960px) {
+  .filter-container {
+    margin-bottom: 1rem;
+  }
+  
+  .search-field {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog-content {
+    padding: 1rem !important;
+  }
+  
+  .dialog-actions {
+    padding: 0.75rem 1rem !important;
+  }
+}

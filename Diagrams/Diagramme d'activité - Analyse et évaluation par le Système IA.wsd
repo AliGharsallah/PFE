@@ -1,0 +1,33 @@
+@startuml
+|Système IA|
+start
+fork
+  partition "Analyse initiale" {
+    :Analyser le CV;
+    :Évaluer la correspondance
+    avec l'offre;
+  }
+fork again
+  partition "Génération de tests" {
+    :Analyser l'offre d'emploi;
+    :Générer un test technique;
+    :Générer un test psychologique;
+  }
+end fork
+
+partition "Évaluation du candidat" {
+  :Évaluer les compétences techniques;
+ 
+  fork
+    :Détecter les émotions;
+  fork again
+    :Analyser le langage;
+  fork again
+    :Détecter les anomalies comportementales;
+  end fork
+ 
+  :Intégrer tous les résultats;
+  :Générer un rapport final;
+}
+stop
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+actor Recruteur
+participant "Interface Utilisateur" as UI
+participant "Service de Recrutement" as RecrutService
+participant "Service d'Offre d'Emploi" as OffreService
+participant "Service de Candidature" as CandidatService
+participant "Base de Données" as DB
+
+Recruteur -> UI: Créer offre d'emploi
+UI -> OffreService: créerOffre(détails)
+OffreService -> DB: enregistrerOffre()
+DB --> OffreService: offreID
+OffreService --> UI: confirmation
+UI --> Recruteur: offre créée
+
+Recruteur -> UI: Publier offre
+UI -> OffreService: publierOffre(offreID)
+OffreService -> DB: mettreÀJourStatut(offreID, "publiée")
+OffreService --> UI: confirmation
+UI --> Recruteur: offre publiée
+
+note right of Recruteur: Attente des candidatures
+
+Recruteur -> UI: Consulter candidatures
+UI -> CandidatService: obtenirCandidatures(offreID)
+CandidatService -> DB: requêteCandidatures()
+DB --> CandidatService: listeCandidatures
+CandidatService --> UI: candidatures avec scores
+UI --> Recruteur: affichage des candidatures
+
+Recruteur -> UI: Consulter détails candidat
+UI -> CandidatService: obtenirDétailsCandidature(candidatureID)
+CandidatService -> DB: requêteDétails()
+DB --> CandidatService: détailsComplets
+CandidatService --> UI: CV, tests, entretien
+UI --> Recruteur: détails de la candidature
+
+Recruteur -> UI: Prendre décision
+UI -> RecrutService: prendreDecision(candidatureID, décision, commentaires)
+RecrutService -> DB: enregistrerDécision()
+RecrutService -> CandidatService: notifierCandidat(candidatureID, décision)
+RecrutService --> UI: confirmation
+UI --> Recruteur: décision enregistrée
+@enduml

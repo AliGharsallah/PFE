@@ -1,0 +1,16 @@
+@startuml
+|Recruteur|
+start
+:S'inscrire;
+:Se connecter;
+|Recruteur|
+partition "Gestion des offres" {
+  :Créer une offre d'emploi;
+  :Publier l'offre;
+  :Consulter les candidatures;
+  :Réviser les résultats des tests;
+  :Prendre une décision
+  (Sélectionner/Rejeter);
+}
+stop
+@enduml
