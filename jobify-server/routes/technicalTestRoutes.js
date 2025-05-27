@@ -6,12 +6,14 @@ const {
   createTest,
   submitTest,
   getTest,
-  startTest
+  startTest,
+  getTestByApplication  
 } = require('../controllers/technicalTestController');
 
 // Générer un test pour une candidature
 router.post('/applications/:id/create', createTest);
 
+router.get('/applications/:applicationId/test', getTestByApplication);
 // Récupérer un test
 router.get('/:id', getTest);
 

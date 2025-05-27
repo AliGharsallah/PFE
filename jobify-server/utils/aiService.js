@@ -11,7 +11,7 @@ async function checkOllamaAvailability() {
     const response = await fetch('http://127.0.0.1:11434/api/tags', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      timeout: 5000
+      timeout: 300000,
     });
     return response.ok;
   } catch (error) {
@@ -582,7 +582,7 @@ Réponds UNIQUEMENT en JSON valide:
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
         const score = typeof parsed.score === 'number' ? parsed.score : parseInt(parsed.score) || 0;
-        const match = score >= 75;
+        const match = score >= 10;
         return { ...parsed, score, match };
       } else {
         throw new Error('Impossible de parser la réponse JSON.');
@@ -629,7 +629,7 @@ function analyzeResumeBasic(resumeText, job) {
   // Limiter le score à 100
   score = Math.min(score, 100);
   
-  const match = score >= 75;
+  const match = score >= 10;
   const feedback = match 
     ? `Profil intéressant avec ${foundSkills.length} compétences correspondantes`
     : `Profil à développer, ${missingSkills.length} compétences manquantes`;

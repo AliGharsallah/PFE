@@ -1,3 +1,4 @@
+// services/api.ts
 import axios from 'axios';
 
 // Create an Axios instance with default config
@@ -74,9 +75,35 @@ export const userService = {
     });
   },
 
-  // Services utilisateur pour l'administration
-  getAllUsers: () => API.get('/admin/users'),
-  getUserById: (id: number) => API.get(`/admin/users/${id}`),
+  // ===== SERVICES ADMIN POUR LA GESTION DES UTILISATEURS =====
+  
+  /**
+   * Récupère tous les utilisateurs avec pagination et filtres
+   */
+  getAllUsers: (params?: {
+    page?: number;
+    limit?: number;
+    role?: string;
+    search?: string;
+  }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.append('page', params.page.toString());
+    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.role) searchParams.append('role', params.role);
+    if (params?.search) searchParams.append('search', params.search);
+    
+    const queryString = searchParams.toString();
+    return API.get(`/admin/users${queryString ? `?${queryString}` : ''}`);
+  },
+
+  /**
+   * Récupère un utilisateur par son ID
+   */
+  getUserById: (id: string) => API.get(`/admin/users/${id}`),
+
+  /**
+   * Crée un nouvel utilisateur
+   */
   createUser: (userData: {
     email: string;
     nom: string;
@@ -84,18 +111,95 @@ export const userService = {
     role: string;
     statut: string;
   }) => API.post('/admin/users', userData),
-  updateUser: (id: number, userData: {
-    email: string;
-    nom: string;
-    prenom: string;
-    role: string;
-    statut: string;
+
+  /**
+   * Met à jour un utilisateur existant
+   */
+  updateUser: (id: string, userData: {
+    email?: string;
+    nom?: string;
+    prenom?: string;
+    role?: string;
+    statut?: string;
   }) => API.put(`/admin/users/${id}`, userData),
-  deleteUser: (id: number) => API.delete(`/admin/users/${id}`),
-  searchUsers: (criteria: object) => API.post('/admin/users/search', criteria),
-  changeUserStatus: (id: number, status: string) => API.patch(`/admin/users/${id}/status`, { status }),
-  resetUserPassword: (id: number) => API.post(`/admin/users/${id}/reset-password`),
+
+  /**
+   * Supprime un utilisateur
+   */
+  deleteUser: (id: string) => API.delete(`/admin/users/${id}`),
+
+  /**
+   * Recherche avancée d'utilisateurs
+   */
+  searchUsers: (criteria: {
+    searchTerm?: string;
+    role?: string;
+    status?: string;
+    dateFrom?: string;
+    dateTo?: string;
+  }) => API.post('/admin/users/search', criteria),
+
+  /**
+   * Change le statut d'un utilisateur (Actif/Inactif)
+   */
+  changeUserStatus: (id: string, status: string) => 
+    API.patch(`/admin/users/${id}/status`, { status }),
+
+  /**
+   * Réinitialise le mot de passe d'un utilisateur
+   */
+  resetUserPassword: (id: string) => 
+    API.post(`/admin/users/${id}/reset-password`),
+
+  /**
+   * Récupère les statistiques des utilisateurs
+   */
   getUserStats: () => API.get('/admin/users/statistics'),
+
+  /**
+   * Exporte la liste des utilisateurs
+   */
+  exportUsers: (format: 'csv' | 'excel' = 'csv', filters?: any) => 
+    API.post('/admin/users/export', { format, filters }, {
+      responseType: 'blob'
+    }),
+
+  /**
+   * Importe des utilisateurs en masse
+   */
+  importUsers: (file: File) => {
+    const formData = new FormData();
+    formData.append('usersFile', file);
+    return API.post('/admin/users/import', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
+
+  /**
+   * Envoie un email de réinitialisation de mot de passe
+   */
+  sendPasswordResetEmail: (id: string) => 
+    API.post(`/admin/users/${id}/send-reset-email`),
+
+  /**
+   * Active/désactive un utilisateur
+   */
+  toggleUserStatus: (id: string) => 
+    API.patch(`/admin/users/${id}/toggle-status`),
+
+  /**
+   * Récupère l'historique des connexions d'un utilisateur
+   */
+  getUserLoginHistory: (id: string, limit: number = 10) => 
+    API.get(`/admin/users/${id}/login-history?limit=${limit}`),
+
+  /**
+   * Récupère les activités récentes d'un utilisateur
+   */
+  getUserActivities: (id: string, limit: number = 20) => 
+    API.get(`/admin/users/${id}/activities?limit=${limit}`),
 };
 
 // Job services
@@ -116,7 +220,7 @@ export const jobService = {
       numberOfQuestions: number;
     };
     status?: string;
-  }) => API.post('/Offers', jobData),
+  }) => API.post('/jobs', jobData),
   updateJob: (id: string, jobData: {
     title?: string;
     company?: string;
@@ -148,7 +252,7 @@ export const applicationService = {
   },
   getMyApplications: () => API.get('/applications/my-applications'),
   getJobApplications: (jobId: string) => API.get(`/applications/job/${jobId}`),
-  getApplication: (id: string) => API.get(`/applications/${id}`),
+  getApplication: (id: string) => API.get(`/applications/application/${id}`),
   updateApplicationStatus: (id: string, status: string) =>
     API.patch(`/applications/${id}/status`, { status }),
 };
@@ -167,7 +271,25 @@ export const testService = {
     API.get(`/tests/${testId}/results`),
 };
 
-// Admin services - Nouveaux services pour le tableau de bord administrateur
+// Psychological test services
+export const psychologicalTestService = {
+  createTest: (technicalTestId: string) =>
+    API.post(`/psychological-tests/technical-test/${technicalTestId}/create`),
+  
+  getTest: (testId: string) =>
+    API.get(`/psychological-tests/${testId}`),
+  
+  startTest: (testId: string) =>
+    API.patch(`/psychological-tests/${testId}/start`),
+  
+  submitTest: (testId: string, data: any) =>
+    API.post(`/psychological-tests/${testId}/submit`, data),
+  
+  getResults: (testId: string) =>
+    API.get(`/psychological-tests/${testId}/results`)
+};
+
+// Admin services - Services pour le tableau de bord administrateur
 export const adminService = {
   // Dashboard overview
   getDashboardOverview: () => 
@@ -329,5 +451,76 @@ export const contentService = {
   getContentHistory: (id: number) => 
     API.get(`/admin/content/${id}/history`),
 };
+
+// Interface TypeScript pour les utilisateurs
+export interface User {
+  id: string;
+  email: string;
+  nom: string;
+  prenom: string;
+  role: 'Admin' | 'Recruteur' | 'Candidat';
+  dateInscription: string;
+  statut: 'Actif' | 'Inactif';
+  profileImage?: string;
+  companyInfo?: {
+    companyName?: string;
+    industry?: string;
+    companySize?: string;
+    companyLogo?: string;
+    description?: string;
+    website?: string;
+    foundedYear?: number;
+    address?: {
+      street?: string;
+      city?: string;
+      zipCode?: string;
+      country?: string;
+    };
+    contactPhone?: string;
+    socialMedia?: {
+      linkedin?: string;
+      twitter?: string;
+      facebook?: string;
+    };
+  };
+  candidateInfo?: {
+    resume?: string;
+    skills?: string[];
+    education?: Array<{
+      institution: string;
+      degree: string;
+      fieldOfStudy: string;
+      from: Date;
+      to: Date;
+    }>;
+    experience?: Array<{
+      title: string;
+      company: string;
+      from: Date;
+      to: Date;
+      description: string;
+    }>;
+  };
+}
+
+export interface UsersResponse {
+  users: User[];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalUsers: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+}
+
+export interface UserStats {
+  totalUsers: number;
+  totalCandidates: number;
+  totalRecruiters: number;
+  totalAdmins: number;
+  newUsersToday: number;
+  newUsersThisWeek: number;
+}
 
 export default API;

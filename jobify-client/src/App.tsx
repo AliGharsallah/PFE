@@ -20,6 +20,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext'; // Ajout de l'AuthProvider si vous l'utilisez
 import AdminDashboard from './Dashboards/Dashboard-admins'; // Assurez-vous que c'est le bon chemin
 import PsychologicalTest from './Pages/PsychologicalTest'; // Assurez-vous que c'est le bon chemin
+import PsychologicalTestResults from './Pages/PsychologicalTestResults';
 
 
 function App() {
@@ -35,14 +36,14 @@ function App() {
           <Route path="/Offers/:id" element={<JobDetailPage />} />
           <Route path="/test-psychologique" element={<PsychologicalTest />} />
 
-          {/* Route pour le tableau de bord admin */}   
+          {/* Route pour le tableau de bord admin */}
 
           <Route
             path="/admin/dashboard"
             element={
-               <ProtectedRoute requiredRole="Admin">
+              <ProtectedRoute requiredRole="Admin">
                 <AdminDashboard />
-                 </ProtectedRoute>
+              </ProtectedRoute>
             }
           />
 
@@ -121,6 +122,23 @@ function App() {
             }
           />
 
+          <Route
+            path="/test-psychologique/:technicalTestId"
+            element={
+              <ProtectedRoute requiredRole="candidate">
+                <PsychologicalTest />
+              </ProtectedRoute>
+            }
+          />
+
+        <Route
+  path="/psychological-tests/:testId/results"
+  element={
+    <ProtectedRoute requiredRole="candidate">
+      <PsychologicalTestResults />
+    </ProtectedRoute>
+  }
+/>
           {/* Route pour les pages non trouvées */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

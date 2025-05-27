@@ -1,1391 +1,3507 @@
-/* =============================================================================
-   PSYCHOLOGICAL TEST CSS - FICHIER ORGANISÉ
-   ============================================================================= */
+/* ================================
+   TEST PSYCHOLOGIQUE - STYLES UNIQUES
+   Noms de classes préfixés pour éviter les conflits
+   ================================ */
 
-/* =============================================================================
-   1. IMPORTS ET VARIABLES
-   ============================================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* =============================================================================
-   2. ANIMATIONS ET KEYFRAMES
-   ============================================================================= */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.4; }
-  100% { opacity: 1; }
-}
-
-@keyframes typing {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-/* =============================================================================
-   3. LAYOUT PRINCIPAL
-   ============================================================================= */
-.psychological-test-container {
-  font-family: 'Inter', sans-serif;
-  max-width: 100%;
+.psych-test-container {
   min-height: 100vh;
-  background-color: #f8fafc;
-  color: #334155;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.test-content {
-  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+/* ================================
+   ANIMATIONS UNIQUES
+   ================================ */
+
+@keyframes psych-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes psych-pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05); 
+    opacity: 0.8;
+  }
+}
+
+@keyframes psych-slide-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes psych-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes psych-progress-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes psych-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes psych-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
+}
+
+/* ================================
+   HEADER PRINCIPAL
+   ================================ */
+
+.psych-test-header {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  animation: psych-slide-in 0.6s ease-out;
+}
+
+.psych-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.psych-back-button:hover {
+  background: #e2e8f0;
+  color: #475569;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.psych-test-title {
+  margin: 0;
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  flex: 1;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.psych-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(252, 211, 77, 0.3);
+  animation: psych-pulse 3s infinite;
+}
+
+/* ================================
+   LOADING ET ÉTATS INITIAUX
+   ================================ */
+
+.psych-loading-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: white;
+  text-align: center;
+  animation: psych-fade-in 0.5s ease-in;
 }
 
-.test-layout {
+.psych-loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-left-color: white;
+  border-radius: 50%;
+  animation: psych-spin 1s linear infinite;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.psych-loading-container p {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.9;
+  animation: psych-pulse 2s infinite;
+}
+
+/* ================================
+   INTRODUCTION DU TEST
+   ================================ */
+
+.psych-test-intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.psych-intro-card {
+  background: white;
+  border-radius: 24px;
+  padding: 48px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: psych-slide-in 0.6s ease-out;
+}
+
+.psych-intro-icon {
+  color: #6366f1;
+  margin-bottom: 24px;
+}
+
+.psych-intro-card h2 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.psych-intro-card > p {
+  margin: 0 0 32px 0;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.psych-intro-features {
   display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  gap: 20px;
-  height: calc(100vh - 180px);
-  min-height: 600px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
 }
 
-/* =============================================================================
-   4. HEADER ET NAVIGATION
-   ============================================================================= */
-.test-header {
+.psych-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.psych-feature:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.psych-feature svg {
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+.psych-feature span {
+  font-weight: 500;
+  color: #374151;
+}
+
+.psych-intro-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fef3f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 32px;
+}
+
+.psych-intro-warning svg {
+  color: #ef4444;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.psych-intro-warning div {
+  color: #991b1b;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.psych-start-button {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+}
+
+.psych-start-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+}
+
+/* ================================
+   TEST TERMINÉ
+   ================================ */
+
+.psych-test-completion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  color: white;
+  animation: psych-slide-in 0.6s ease-out;
+}
+
+.psych-completion-icon {
+  color: #10b981;
+  margin-bottom: 24px;
+  filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
+}
+
+.psych-test-completion h2 {
+  margin: 0 0 16px 0;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.psych-test-completion p {
+  margin: 0 0 32px 0;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.psych-results-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+}
+
+.psych-results-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+}
+
+/* ================================
+   TEST EN COURS - LAYOUT SIMPLIFIÉ
+   ================================ */
+
+.psych-test-main {
+  animation: psych-slide-in 0.6s ease-out 0.4s both;
+}
+
+/* ================================
+   BARRE DE PROGRESSION
+   ================================ */
+
+.psych-progress-container {
+background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-top:3%;
+
+
+}
+
+.psych-progress-bar {
+  background: #f1f5f9;
+  border-radius: 8px;
+  height: 8px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.psych-progress-fill {
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+.psych-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: psych-progress-flow 2s infinite;
+}
+
+.psych-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ================================
+   LAYOUT PRINCIPAL - UNE SEULE COLONNE
+   ================================ */
+
+.psych-test-layout {
+ display: flex;
+  gap: 14.6px;
+  max-width: 100%;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* ================================
+   SECTION QUESTION PRINCIPALE
+   ================================ */
+
+.psych-question-section {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.psych-question-section:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.psych-question-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
 }
 
-.test-title-container {
+.psych-question-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+.psych-question-info svg {
+  color: #6366f1;
+}
+
+.psych-question-badges {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.company-logo {
-  height: 32px;
-  width: auto;
-}
-
-.test-header h1 {
-  font-size: 1.5rem;
+.psych-category-badge {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
-  margin: 0;
-  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
-.back-button {
+.psych-difficulty-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ================================
+   INDICATEUR DE PHASE
+   ================================ */
+
+.psych-phase-indicator {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.psych-phase-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  animation: psych-progress-flow 3s infinite;
+}
+
+.psych-phase-thinking {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+  animation: psych-breathe 2s ease-in-out infinite;
+}
+
+.psych-phase-answering {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+  animation: psych-pulse 1.5s infinite;
+}
+
+.psych-phase-transition {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* ================================
+   TEXTE DE QUESTION
+   ================================ */
+
+.psych-question-text-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.psych-question-text-container:hover {
+  background: #232e3a;
+  border-color: #cbd5e1;
+  
+}
+
+.psych-question-text {
+  margin: 0;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ================================
+   CONTRÔLES ET STATUTS
+   ================================ */
+
+.psych-controls-status-grid {
+display: flex;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-direction: column;
+  background: #1f2937;
+  padding: 3%;
+  border-radius: 5%;
+  width:35%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   CONTRÔLES VOCAUX
+   ================================ */
+
+.psych-vocal-controls {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.psych-vocal-controls h4 {
+  margin: 0 0 16px 0;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: none;
-  border: none;
+}
+
+.psych-vocal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.psych-control-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #374151;
+}
+
+.psych-control-button:hover:not(:disabled) {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.psych-control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.psych-mic-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.psych-mic-status.recording {
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  color: #dc2626;
+  animation: psych-glow 2s ease-in-out infinite;
+}
+
+/* ================================
+   STATUTS DE SÉCURITÉ
+   ================================ */
+
+.psych-security-status {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.psych-security-status h4 {
+  margin: 0 0 16px 0;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.psych-hands-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.psych-hand-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.psych-hand-status.active {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+
+.psych-hand-status.inactive {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  animation: psych-pulse 2s infinite;
+}
+
+.psych-phase-info {
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
   color: #64748b;
-  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.psych-violations-warning {
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  animation: psych-pulse 3s infinite;
+}
+
+/* ================================
+   CAMÉRA ET SURVEILLANCE
+   ================================ */
+
+.psych-camera-surveillance {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.psych-camera-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  
+}
+
+.psych-camera-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.psych-camera-status {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.psych-camera-status.active {
+  background: #dcfce7;
+  color: #166534;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.psych-camera-status.inactive {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.psych-camera-video {
+  width: 100%;
+  border-radius: 12px;
+  background: #1f2937;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transform: scaleX(-1); /* Effet miroir */
+}
+
+.psych-camera-video:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+.psych-camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4/3;
+  background: #f3f4f6;
+  border-radius: 12px;
+  color: #6b7280;
+  gap: 12px;
+  text-align: center;
+}
+
+.psych-camera-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.psych-retry-button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.psych-retry-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* ================================
+   STATISTIQUES
+   ================================ */
+
+.psych-stats-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.psych-stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.psych-stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.psych-stat-item:last-child {
+  border-bottom: none;
+}
+
+.psych-stat-label {
+  color: #64748b;
+}
+
+.psych-stat-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.psych-stat-value.good {
+  color: #16a34a;
+}
+
+.psych-stat-value.warning {
+  color: #f59e0b;
+}
+
+.psych-stat-value.danger {
+  color: #dc2626;
+}
+
+/* ================================
+   TRANSCRIPTION
+   ================================ */
+
+.psych-transcript-container {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: psych-slide-in 0.5s ease-out;
+}
+
+.psych-transcript-title {
+  margin: 0 0 12px 0;
+  color: #0c4a6e;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.psych-transcript-text {
+  margin: 0;
+  color: #1e293b;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 24px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0f2fe;
+}
+
+.psych-transcript-text.empty {
+  font-style: italic;
+  color: #64748b;
+}
+
+/* ================================
+   ANALYSE VOCALE
+   ================================ */
+
+.psych-voice-analysis {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  animation: psych-slide-in 0.5s ease-out;
+}
+
+.psych-analysis-title {
+  margin: 0 0 16px 0;
+  color: #0c4a6e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.psych-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.psych-analysis-item {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #374151;
+  border: 1px solid #e0f2fe;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.psych-analysis-item:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 1024px) {
+  .psych-controls-status-grid,
+  .psych-camera-surveillance {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .psych-test-container {
+    padding: 12px;
+  }
+  
+  .psych-test-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+   .psych-test-header h3{
+    margin:auto;
+   }
+  
+  .psych-test-title {
+    font-size: 20px;
+  }
+  
+  .psych-intro-card {
+    padding: 32px 24px;
+  }
+  
+  .psych-intro-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .psych-question-section {
+    padding: 24px 16px;
+    
+  }
+  
+  .psych-question-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .psych-question-badges {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+  
+  .psych-vocal-buttons {
+    flex-direction: column;
+  }
+  
+  .psych-analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .psych-test-container {
+    padding: 8px;
+  }
+  
+  .psych-test-header {
+    padding: 12px;
+  }
+  
+  .psych-question-section {
+    padding: 20px 12px;
+  }
+  
+  .psych-question-text {
+    font-size: 18px;
+  }
+  
+  .psych-phase-indicator {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+}
+
+/* ================================
+   ACCESSIBILITÉ
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.psych-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles pour l'accessibilité */
+.psych-control-button:focus,
+.psych-retry-button:focus,
+.psych-back-button:focus,
+.psych-start-button:focus,
+.psych-results-button:focus {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+/* États de focus pour navigation clavier */
+.psych-question-section:focus-within,
+.psych-vocal-controls:focus-within,
+.psych-security-status:focus-within {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+/* ================================
+   THÈME SOMBRE (OPTIONNEL)
+   ================================ */
+
+@media (prefers-color-scheme: dark) {
+  .psych-test-container {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  }
+  .psych-question-section{
+    width: 95.0%;
+  }
+  .psych-test-header,
+  .psych-question-section,
+  .psych-intro-card {
+    background: #1f2937;
+    color: #f9fafb;
+    border: 1px solid #374151;
+  }
+  
+  .psych-question-text-container,
+  .psych-transcript-container,
+  .psych-voice-analysis,
+  .psych-vocal-controls,
+  .psych-security-status,
+  .psych-camera-container,
+  .psych-stats-container {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .psych-control-button,
+  .psych-mic-status {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .psych-camera-placeholder {
+    background: #374151;
+    color: #9ca3af;
+  }
+  
+  .psych-progress-bar {
+    background: #374151;
+  }
+  
+  .psych-feature {
+    background: #ffffff;
+    border-color: #4b5563;
+  }
+  
+  .psych-analysis-item,
+  .psych-transcript-text {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .psych-stat-label {
+    color: #9ca3af;
+  }
+  
+  .psych-stat-value {
+    color: #f9fafb;
+  }
+}
+
+/* ================================
+   PRINT STYLES
+   ================================ */
+
+@media print {
+  .psych-test-container {
+    background: white !important;
+    color: black !important;
+    padding: 20px;
+  }
+  
+  .psych-vocal-controls,
+  .psych-camera-container,
+  .psych-timer,
+  .psych-back-button {
+    display: none !important;
+  }
+  
+  .psych-test-layout {
+    max-width: none !important;
+  }
+  
+  .psych-test-header {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+  }
+  
+  .psych-question-section {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+  
+  .psych-phase-indicator {
+    background: #f3f4f6 !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ================================
+   ÉTATS SPÉCIAUX ET INTERACTIONS
+   ================================ */
+
+/* Animation pour les éléments qui apparaissent */
+.psych-fade-in {
+  animation: psych-fade-in 0.5s ease-out;
+}
+
+.psych-slide-in {
+  animation: psych-slide-in 0.6s ease-out;
+}
+
+/* États hover pour améliorer l'interactivité */
+.psych-interactive:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Loading states */
+.psych-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.psych-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: psych-progress-flow 1.5s infinite;
+}
+
+/* États d'erreur */
+.psych-error-state {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.psych-error-state::before {
+  content: '⚠️ ';
+  font-weight: bold;
+}
+
+/* États de succès */
+.psych-success-state {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.psych-success-state::before {
+  content: '✅ ';
+  font-weight: bold;
+}
+
+/* ================================
+   PERFORMANCE ET OPTIMISATIONS
+   ================================ */
+
+/* Utilisation de GPU pour les animations */
+.psych-phase-indicator,
+.psych-progress-fill,
+.psych-loading-spinner {
+  will-change: transform;
+}
+
+/* Optimisation des re-rendus */
+.psych-camera-video,
+.psych-transcript-text {
+  contain: layout style paint;
+}
+
+/* ================================
+   VARIABLES CSS POUR COHÉRENCE
+   ================================ */
+
+:root {
+  --psych-primary-blue: #6366f1;
+  --psych-primary-purple: #8b5cf6;
+  --psych-success-green: #10b981;
+  --psych-warning-orange: #f59e0b;
+  --psych-danger-red: #ef4444;
+  --psych-neutral-gray: #64748b;
+  --psych-background-light: #f8fafc;
+  --psych-background-dark: #1f2937;
+  --psych-text-primary: #1e293b;
+  --psych-text-secondary: #64748b;
+  --psych-border-light: #e2e8f0;
+  --psych-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --psych-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --psych-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Utilisation des variables CSS pour cohérence */
+.psych-primary-gradient {
+  background: linear-gradient(135deg, var(--psych-primary-blue) 0%, var(--psych-primary-purple) 100%);
+}
+
+.psych-success-gradient {
+  background: linear-gradient(135deg, var(--psych-success-green) 0%, #059669 100%);
+}
+
+.psych-warning-gradient {
+  background: linear-gradient(135deg, var(--psych-warning-orange) 0%, #d97706 100%);
+}
+
+.psych-danger-gradient {
+  background: linear-gradient(135deg, var(--psych-danger-red) 0%, #dc2626 100%);
+}/* ================================
+   TEST PSYCHOLOGIQUE - STYLES OPTIMISÉS
+   Version CSS externe séparée du JSX
+   ================================ */
+
+.psychological-test-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+/* ================================
+   ANIMATIONS ET TRANSITIONS
+   ================================ */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05); 
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes progressFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
+}
+
+/* ================================
+   HEADER PRINCIPAL
+   ================================ */
+
+.test-header {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  animation: slideIn 0.6s ease-out;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #64748b;
+  text-decoration: none;
   font-weight: 500;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .back-button:hover {
-  background-color: #f1f5f9;
-  color: #334155;
+  background: #e2e8f0;
+  color: #475569;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.test-title {
+  margin: 0;
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  flex: 1;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .timer {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #f8fafc;
-  padding: 8px 16px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
-  color: #0f172a;
-  border: 1px solid #e2e8f0;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(252, 211, 77, 0.3);
+  animation: pulse 3s infinite;
 }
 
-/* =============================================================================
-   5. BARRE DE PROGRESSION
-   ============================================================================= */
-.progress-bar-container {
-  width: 100%;
-  height: 8px;
-  background-color: #e2e8f0;
-  border-radius: 4px;
-  overflow: hidden;
+/* ================================
+   LOADING ET ÉTATS INITIAUX
+   ================================ */
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: white;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-left-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
   margin-bottom: 20px;
-  position: relative;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4f46e5, #8b5cf6);
-  border-radius: 4px;
-  transition: width 0.3s ease;
+.loading-container p {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.9;
+  animation: pulse 2s infinite;
 }
 
-.progress-bar-label {
-  position: absolute;
-  top: -25px;
-  right: 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #64748b;
-}
+/* ================================
+   INTRODUCTION DU TEST
+   ================================ */
 
-/* =============================================================================
-   6. ÉCRAN D'INTRODUCTION
-   ============================================================================= */
 .test-intro {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  padding: 24px;
+  min-height: 60vh;
 }
 
 .intro-card {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 32px;
+  background: white;
+  border-radius: 24px;
+  padding: 48px;
   max-width: 600px;
-  width: 100%;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.intro-card h2 {
-  font-size: 1.8rem;
-  color: #1e293b;
-  margin: 0;
-  font-weight: 700;
-}
-
-.intro-card p {
-  font-size: 1rem;
-  color: #64748b;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.intro-details {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 8px;
-}
-
-.intro-detail {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background-color: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.6s ease-out;
 }
 
 .intro-icon {
-  color: #4f46e5;
+  color: #6366f1;
+  margin-bottom: 24px;
 }
 
-.intro-detail h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 4px 0;
+.intro-card h2 {
+  margin: 0 0 16px 0;
   color: #1e293b;
+  font-size: 28px;
+  font-weight: 700;
 }
 
-.intro-detail p {
-  font-size: 0.9rem;
-  margin: 0;
+.intro-card > p {
+  margin: 0 0 32px 0;
+  color: #64748b;
+  fontSize: 16px;
+}
+
+.intro-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.feature:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.feature svg {
+  color: #6366f1;
+  flex-shrink: 0;
+}
+
+.feature span {
+  font-weight: 500;
+  color: #374151;
 }
 
 .intro-warning {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 16px;
-  background-color: #fffbeb;
+  background: #fef3f2;
+  border: 1px solid #fecaca;
   border-radius: 12px;
-  border: 1px solid #fef3c7;
+  padding: 16px;
+  margin-bottom: 32px;
 }
 
 .intro-warning svg {
-  color: #f59e0b;
+  color: #ef4444;
   flex-shrink: 0;
   margin-top: 2px;
 }
 
-.intro-warning p {
-  font-size: 0.9rem;
-  color: #92400e;
-  margin: 0;
-}
-
-/* =============================================================================
-   7. SECTION DES QUESTIONS
-   ============================================================================= */
-.questions-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-
-.question-container {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.question-text {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0;
+.intro-warning div {
+  color: #991b1b;
+  font-weight: 500;
   line-height: 1.5;
+  text-align: left;
 }
 
-.answer-textarea {
-  width: 100%;
-  min-height: 160px;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  resize: vertical;
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #334155;
-  background-color: #ffffff;
-  transition: all 0.2s ease;
-  outline: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.answer-textarea:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
-
-.answer-textarea:disabled {
-  background-color: #f8fafc;
-  color: #94a3b8;
-  cursor: not-allowed;
-}
-
-.answer-textarea::placeholder {
-  color: #94a3b8;
-  opacity: 0.8;
-}
-
-.options-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.option:hover {
-  background-color: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.option input[type="radio"] {
-  width: 20px;
-  height: 20px;
-  accent-color: #4f46e5;
-  cursor: pointer;
-}
-
-.option label {
-  font-size: 1rem;
-  color: #334155;
-  cursor: pointer;
-  flex: 1;
-}
-
-.question-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
-}
-
-.question-progress {
-  font-size: 0.9rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-/* =============================================================================
-   8. SECTION VIDÉO/CAMÉRA
-   ============================================================================= */
-.center-video-section {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.video-container {
-  background-color: #ffffff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border: 1px solid #e2e8f0;
-}
-
-.video-header {
-  background-color: #1e293b;
-  color: white;
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.video-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-.video-recording-indicator {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.recording-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #ef4444;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-.video-body {
-  flex: 1;
-  position: relative;
-  background-color: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.video-body video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.camera-off-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: white;
-  background-color: rgba(15, 23, 42, 0.85);
-  z-index: 5;
-}
-
-.camera-off-overlay svg {
-  margin-bottom: 8px;
-}
-
-.camera-off-overlay span {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.camera-off-overlay p {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  max-width: 80%;
-  text-align: center;
-  margin-top: 8px;
-}
-
-.video-footer {
-  padding: 12px 16px;
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  background-color: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-}
-
-.video-button {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background-color: #ffffff;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  pointer-events: auto;
-}
-
-.video-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #f1f5f9;
-}
-
-.video-button.off {
-  background-color: #ef4444;
-  color: white;
-}
-
-.video-button.off:hover {
-  background-color: #dc2626;
-}
-
-.video-warning {
-  padding: 10px 16px;
-  background-color: #fffbeb;
-  border-top: 1px solid #fef3c7;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-  color: #92400e;
-}
-
-.video-warning svg {
-  color: #f59e0b;
-  flex-shrink: 0;
-}
-
-/* =============================================================================
-   9. DÉTECTION FACIALE ET GUIDAGE
-   ============================================================================= */
-.detection-canvas {
-  z-index: 4;
-}
-
-.face-guide-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 4;
-}
-
-.face-guide-circle {
-  width: 220px;
-  height: 220px;
-  border: 3px dashed rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  margin-bottom: 15px;
-  transition: all 0.3s ease-in-out;
-}
-
-.face-guide-circle.centered {
-  border: 3px solid #22c55e;
-  box-shadow: 0 0 15px rgba(4, 6, 5, 0.5);
-}
-
-.face-guide-text {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.detection-status {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background-color: #f8fafc;
-  border-top: 1px solid #e2e8f0;
-}
-
-.detection-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.8rem;
-  padding: 5px 8px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.detection-item.detected {
-  background-color: rgba(34, 197, 94, 0.1);
-  color: #166534;
-}
-
-.detection-item.not-detected {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: #92400e;
-}
-
-.detection-icon {
-  display: flex;
-  align-items: center;
-}
-
-.detection-item.detected .detection-icon {
-  color: #22c55e;
-}
-
-.detection-item.not-detected .detection-icon {
-  color: #f59e0b;
-}
-
-.detection-label {
-  font-weight: 500;
-}
-
-/* =============================================================================
-   10. VÉRIFICATION ET STATUT
-   ============================================================================= */
-.verification-pending {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 30px 20px;
-}
-
-.verification-status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 500px;
-  margin-top: 10px;
-  position: relative;
-}
-
-.verification-status::before {
-  content: '';
-  position: absolute;
-  top: 25px;
-  left: 40px;
-  right: 40px;
-  height: 2px;
-  background-color: #e2e8f0;
-  z-index: 0;
-}
-
-.verification-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
-}
-
-.step-indicator {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #f8fafc;
-  border: 2px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: #64748b;
-  transition: all 0.3s ease;
-}
-
-.verification-step.active .step-indicator {
-  background-color: #4f46e5;
-  border-color: #4f46e5;
-  color: white;
-}
-
-.verification-step.active .step-indicator svg {
-  color: white;
-}
-
-.step-label {
-  font-size: 0.85rem;
-  color: #64748b;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.verification-step.active .step-label {
-  color: #1e293b;
-  font-weight: 600;
-}
-
-.verification-instructions {
-  background-color: #f8fafc;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #334155;
-  margin-top: 20px;
-}
-
-.verification-instructions p {
-  margin: 0;
-}
-
-/* =============================================================================
-   11. SECTION CHAT
-   ============================================================================= */
-.chat-section {
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
-  max-height: 100%;
-}
-
-.chat-header {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-}
-
-.chat-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.chat-body {
-  flex: 1;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow-y: auto;
-  max-height: calc(100vh - 250px);
-}
-
-.chat-messages {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.message {
-  display: flex;
-  gap: 12px;
-  max-width: 100%;
-}
-
-.message-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.bot-avatar {
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-  width: 100%;
-  height: 100%;
-}
-
-.message-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.message-text {
-  background-color: #f8fafc;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  word-break: break-word;
-}
-
-.bot-message .message-text {
-  background-color: #f1f5f9;
-  color: #334155;
-}
-
-.message-time {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  margin-top: 4px;
-  text-align: right;
-}
-
-.typing-indicator {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 12px 16px;
-  background-color: #f1f5f9;
-  border-radius: 12px;
-}
-
-.typing-indicator span {
-  width: 8px;
-  height: 8px;
-  background-color: #94a3b8;
-  border-radius: 50%;
-  display: inline-block;
-  animation: typing 1.5s infinite ease-in-out;
-}
-
-.typing-indicator span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing-indicator span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-/* =============================================================================
-   12. MÉTRIQUES DE SURVEILLANCE
-   ============================================================================= */
-.surveillance-metrics {
-  background-color: #ffffff;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border: 1px solid #e2e8f0;
-}
-
-.metrics-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: #1e293b;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.metrics-body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.metric {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.metric-label {
-  font-size: 0.85rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.metric-value-container {
-  height: 8px;
-  background-color: #e2e8f0;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.metric-value-fill {
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.5s ease, background-color 0.5s ease;
-}
-
-.metric-number {
-  font-size: 0.85rem;
-  color: #64748b;
-  text-align: right;
-  font-weight: 600;
-}
-
-.emotions-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.emotion {
-  flex: 1;
-  background-color: #f8fafc;
-  padding: 8px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.emotion-label {
-  font-size: 0.8rem;
-  color: #64748b;
-  margin-bottom: 4px;
-}
-
-.emotion-value {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-/* =============================================================================
-   13. STATUT DE SÉCURITÉ
-   ============================================================================= */
-.security-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  background-color: #f8fafc;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-}
-
-.security-info svg {
-  color: #22c55e;
-}
-
-.security-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 8px;
-}
-
-.security-status.normal {
-  background-color: #f0fdf4;
-  border: 1px solid #dcfce7;
-}
-
-.security-status.warning {
-  background-color: #fffbeb;
-  border: 1px solid #fef3c7;
-}
-
-.security-status.alert {
-  background-color: #fef2f2;
-  border: 1px solid #fee2e2;
-}
-
-.security-status.normal .security-icon {
-  color: #22c55e;
-}
-
-.security-status.warning .security-icon {
-  color: #f59e0b;
-}
-
-.security-status.alert .security-icon {
-  color: #ef4444;
-}
-
-.security-label {
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.security-status.normal .security-label {
-  color: #166534;
-}
-
-.security-status.warning .security-label {
-  color: #92400e;
-}
-
-.security-status.alert .security-label {
-  color: #b91c1c;
-}
-
-/* =============================================================================
-   14. BOUTONS ET CONTRÔLES
-   ============================================================================= */
 .start-button {
-  background-color: #4f46e5;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   border: none;
-  padding: 16px 24px;
   border-radius: 12px;
-  font-size: 1rem;
+  padding: 16px 32px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 8px;
-  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
 }
 
 .start-button:hover {
-  background-color: #4338ca;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
 }
 
-.next-button {
+/* ================================
+   TEST TERMINÉ
+   ================================ */
+
+.test-completion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  color: white;
+  animation: slideIn 0.6s ease-out;
+}
+
+.completion-icon {
+  color: #10b981;
+  margin-bottom: 24px;
+  filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
+}
+
+.test-completion h2 {
+  margin: 0 0 16px 0;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.test-completion p {
+  margin: 0 0 32px 0;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.results-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+}
+
+.results-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+}
+
+/* ================================
+   TEST EN COURS
+   ================================ */
+
+.test-main {
+  animation: slideIn 0.6s ease-out 0.4s both;
+}
+
+/* ================================
+   BARRE DE PROGRESSION
+   ================================ */
+
+.progress-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  background: #f1f5f9;
+  border-radius: 8px;
+  height: 8px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: progressFlow 2s infinite;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ================================
+   LAYOUT PRINCIPAL
+   ================================ */
+
+.test-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ================================
+   SECTION QUESTION PRINCIPALE
+   ================================ */
+
+.question-section {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.question-section:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.question-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.question-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+.question-info svg {
+  color: #6366f1;
+}
+
+.question-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-badge {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.difficulty-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ================================
+   INDICATEUR DE PHASE
+   ================================ */
+
+.phase-indicator {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.phase-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  animation: progressFlow 3s infinite;
+}
+
+.phase-thinking {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.phase-answering {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+  animation: pulse 1.5s infinite;
+}
+
+.phase-transition {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* ================================
+   TEXTE DE QUESTION
+   ================================ */
+
+.question-text-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.question-text-container:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.question-text {
+  margin: 0;
+  color: #1e293b;
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ================================
+   CONTRÔLES VOCAUX
+   ================================ */
+
+.vocal-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.control-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-size: 1rem;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  flex: 1;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
-.next-button:hover:not(:disabled) {
-  background-color: #4338ca;
+.control-button:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.next-button:disabled {
-  background-color: #cbd5e1;
+.control-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
-.return-button {
-  background-color: #4f46e5;
+.mic-status {
+  background: #f0fdf4;
+  border: 2px solid #bbf7d0;
+  color: #16a34a;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.mic-status.recording {
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  color: #dc2626;
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* ================================
+   TRANSCRIPTION
+   ================================ */
+
+.transcript-container {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.transcript-title {
+  margin: 0 0 12px 0;
+  color: #0c4a6e;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transcript-text {
+  margin: 0;
+  color: #1e293b;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 24px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0f2fe;
+}
+
+.transcript-text.empty {
+  font-style: italic;
+  color: #64748b;
+}
+
+/* ================================
+   ANALYSE VOCALE
+   ================================ */
+
+.voice-analysis {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.analysis-title {
+  margin: 0 0 16px 0;
+  color: #0c4a6e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.analysis-item {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #374151;
+  border: 1px solid #e0f2fe;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analysis-item:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   PANNEAU LATÉRAL
+   ================================ */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width:30%;
+}
+
+.sidebar-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* ================================
+   CAMÉRA
+   ================================ */
+
+.camera-container {
+  position: relative;
+}
+
+.camera-status {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.camera-status.active {
+  background: #dcfce7;
+  color: #166534;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.camera-status.inactive {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.camera-video {
+  width: 100%;
+  border-radius: 12px;
+  background: #1f2937;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transform: scaleX(-1); /* Effet miroir */
+}
+
+.camera-video:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+.camera-video.camera-active {
+  display: block;
+  opacity: 1;
+}
+
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4/3;
+  background: #f3f4f6;
+  border-radius: 12px;
+  color: #6b7280;
+  gap: 12px;
+  text-align: center;
+}
+
+.camera-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.retry-button {
+  background: #3b82f6;
   color: white;
   border: none;
-  padding: 14px 24px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 8px;
+  transition: all 0.3s ease;
 }
 
-.return-button:hover {
-  background-color: #4338ca;
+.retry-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* ================================
+   SÉCURITÉ
+   ================================ */
+
+.security-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hand-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.hand-status.active {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+
+.hand-status.inactive {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  animation: pulse 2s infinite;
+}
+
+.phase-info {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #64748b;
+  text-align: center;
+}
+
+.violations-warning {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  animation: pulse 3s infinite;
+}
+
+/* ================================
+   STATISTIQUES
+   ================================ */
+
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: #64748b;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.stat-value.good {
+  color: #16a34a;
+}
+
+.stat-value.warning {
+  color: #f59e0b;
+}
+
+.stat-value.danger {
+  color: #dc2626;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
+@media (max-width: 1200px) {
+  .test-layout {
+    grid-template-columns: 1fr 320px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .test-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  
+  .sidebar-card {
+    min-width: 280px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .psychological-test-container {
+    padding: 12px;
+  }
+  
+  .test-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+  
+  .test-title {
+    font-size: 20px;
+  }
+  
+  .intro-card {
+    padding: 32px 24px;
+  }
+  
+  .intro-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .question-section {
+    padding: 24px 16px;
+  }
+  
+  .question-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .question-badges {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+  
+  .vocal-controls {
+    flex-direction: column;
+  }
+  
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
+    flex-direction: column;
+  }
+  
+  .sidebar-card {
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .psychological-test-container {
+    padding: 8px;
+  }
+  
+  .test-header {
+    padding: 12px;
+  }
+  
+  .question-section {
+    padding: 20px 12px;
+  }
+  
+  .question-text {
+    font-size: 18px;
+  }
+  
+  .phase-indicator {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+}
+
+/* ================================
+   ACCESSIBILITÉ
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles pour l'accessibilité */
+.control-button:focus,
+.retry-button:focus,
+.back-button:focus,
+.start-button:focus,
+.results-button:focus {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+/* États de focus pour navigation clavier */
+.sidebar-card:focus-within,
+.question-section:focus-within {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+/* ================================
+   THÈME SOMBRE (OPTIONNEL)
+   ================================ */
+
+@media (prefers-color-scheme: dark) {
+  .psychological-test-container {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  }
+  
+  .test-header,
+  .question-section,
+  .sidebar-card,
+  .intro-card {
+    background: #1f2937;
+    color: #f9fafb;
+    border: 1px solid #374151;
+  }
+  
+  .question-text-container,
+  .transcript-container,
+  .voice-analysis {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .control-button,
+  .mic-status {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .camera-placeholder {
+    background: #374151;
+    color: #9ca3af;
+  }
+  
+  .progress-bar {
+    background: #374151;
+  }
+  
+  .feature {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  .analysis-item,
+  .transcript-text {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .stat-label {
+    color: #9ca3af;
+  }
+  
+  .stat-value {
+    color: #f9fafb;
+  }
+}
+
+/* ================================
+   PRINT STYLES
+   ================================ */
+
+@media print {
+  .psychological-test-container {
+    background: white !important;
+    color: black !important;
+    padding: 20px;
+  }
+  
+  .sidebar,
+  .vocal-controls,
+  .camera-container,
+  .timer,
+  .back-button {
+    display: none !important;
+  }
+  
+  .test-layout {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .test-header {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+  }
+  
+  .question-section {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+  }
+  
+  .phase-indicator {
+    background: #f3f4f6 !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ================================
+   ÉTATS SPÉCIAUX ET INTERACTIONS
+   ================================ */
+
+/* Animation pour les éléments qui apparaissent */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.6s ease-out;
+}
+
+/* États hover pour améliorer l'interactivité */
+.interactive:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Loading states */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: progressFlow 1.5s infinite;
+}
+
+/* États d'erreur */
+.error-state {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.error-state::before {
+  content: '⚠️ ';
+  font-weight: bold;
+}
+
+/* États de succès */
+.success-state {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+}
+
+.success-state::before {
+  content: '✅ ';
+  font-weight: bold;
+}
+
+/* ================================
+   PERFORMANCE ET OPTIMISATIONS
+   ================================ */
+
+/* Utilisation de GPU pour les animations */
+.phase-indicator,
+.progress-fill,
+.loading-spinner {
+  will-change: transform;
+}
+
+/* Optimisation des re-rendus */
+.camera-video,
+.transcript-text {
+  contain: layout style paint;
+}
+
+/* Préchargement des couleurs fréquemment utilisées */
+:root {
+  --primary-blue: #6366f1;
+  --primary-purple: #8b5cf6;
+  --success-green: #10b981;
+  --warning-orange: #f59e0b;
+  --danger-red: #ef4444;
+  --neutral-gray: #64748b;
+  --background-light: #f8fafc;
+  --background-dark: #1f2937;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-light: #e2e8f0;
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Utilisation des variables CSS pour cohérence */
+.primary-gradient {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+}
+
+.success-gradient {
+  background: linear-gradient(135deg, var(--success-green) 0%, #059669 100%);
+}
+
+.warning-gradient {
+  background: linear-gradient(135deg, var(--warning-orange) 0%, #d97706 100%);
+}
+
+.danger-gradient {
+  background: linear-gradient(135deg, var(--danger-red) 0%, #dc2626 100%);
+}/* ================================
+   TEST PSYCHOLOGIQUE - STYLES OPTIMISÉS
+   ================================ */
+
+.psychological-test-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+/* ================================
+   ANIMATIONS ET TRANSITIONS
+   ================================ */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05); 
+    opacity: 0.8;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes progressFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ================================
+   HEADER OPTIMISÉ
+   ================================ */
+
+.test-header {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  animation: slideIn 0.6s ease-out;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background: #e2e8f0;
+  color: #475569;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* =============================================================================
-   15. ÉCRANS DE CHARGEMENT ET COMPLÉTION
-   ============================================================================= */
+.test-title {
+  margin: 0;
+  color: #1e293b;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  flex: 1;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(252, 211, 77, 0.3);
+  animation: pulse 3s infinite;
+}
+
+/* ================================
+   LOADING AMÉLIORÉ
+   ================================ */
+
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 300px;
-  gap: 16px;
+  min-height: 60vh;
+  color: white;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in;
 }
 
 .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e2e8f0;
-  border-top: 3px solid #4f46e5;
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-left-color: white;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-.loading-dot {
-  width: 12px;
-  height: 12px;
-  background-color: white;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
+.loading-container p {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.9;
+  animation: pulse 2s infinite;
 }
 
-.test-completion {
+/* ================================
+   BARRE DE PROGRESSION
+   ================================ */
+
+.progress-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.6s ease-out 0.2s both;
+}
+
+.progress-bar {
+  background: #f1f5f9;
+  border-radius: 8px;
+  height: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  animation: progressFlow 2s infinite;
+}
+
+.progress-labels {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-  padding: 24px;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #64748b;
 }
 
-.completion-card {
-  background-color: #ffffff;
+/* ================================
+   LAYOUT PRINCIPAL
+   ================================ */
+
+.test-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 20px;
+  align-items: start;
+  animation: slideIn 0.6s ease-out 0.4s both;
+}
+
+/* ================================
+   SECTION QUESTION PRINCIPALE
+   ================================ */
+
+.question-section {
+  background: white;
   border-radius: 16px;
   padding: 32px;
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-.completion-icon {
-  color: #22c55e;
+.question-section:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-.completion-card h2 {
-  font-size: 1.8rem;
-  color: #1e293b;
-  margin: 0;
-  font-weight: 700;
-}
-
-.completion-card p {
-  font-size: 1rem;
-  color: #64748b;
-  line-height: 1.6;
-  margin: 0;
-}
-
-/* =============================================================================
-   16. FOOTER
-   ============================================================================= */
-.test-footer {
-  background-color: #ffffff;
-  border-top: 1px solid #e2e8f0;
-  padding: 16px 24px;
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.footer-info {
+.question-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
 }
 
-.footer-info p {
+.question-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.question-badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-badge {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.difficulty-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ================================
+   INDICATEUR DE PHASE
+   ================================ */
+
+.phase-indicator {
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.phase-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  animation: progressFlow 3s infinite;
+}
+
+.phase-thinking {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+  animation: pulse 2s infinite;
+}
+
+.phase-answering {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+  animation: pulse 1.5s infinite;
+}
+
+.phase-transition {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* ================================
+   QUESTION TEXT
+   ================================ */
+
+.question-text-container {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.question-text-container:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.question-text {
   margin: 0;
+  color: #1e293b;
+  font-size: 20px;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
-.footer-security {
+/* ================================
+   CONTRÔLES VOCAUX
+   ================================ */
+
+.vocal-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.control-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.control-button:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.control-button.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border-color: #3b82f6;
+}
+
+.mic-status {
+  background: #f0fdf4;
+  border: 2px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.mic-status.recording {
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  color: #dc2626;
+  animation: pulse 2s infinite;
+}
+
+/* ================================
+   TRANSCRIPTION
+   ================================ */
+
+.transcript-container {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.transcript-title {
+  margin: 0 0 12px 0;
+  color: #0c4a6e;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.footer-security svg {
-  color: #22c55e;
-}
-
-/* =============================================================================
-   17. NOTIFICATIONS TOAST
-   ============================================================================= */
-.Toastify__toast {
+.transcript-text {
+  margin: 0;
+  color: #1e293b;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 24px;
+  padding: 12px;
+  background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0f2fe;
 }
 
-.Toastify__toast--success {
-  background-color: #f0fdf4;
+.transcript-text.empty {
+  font-style: italic;
+  color: #64748b;
+}
+
+/* ================================
+   ANALYSE VOCALE
+   ================================ */
+
+.voice-analysis {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.analysis-title {
+  margin: 0 0 16px 0;
+  color: #0c4a6e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.analysis-item {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #374151;
+  border: 1px solid #e0f2fe;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analysis-item:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   PANNEAU LATÉRAL
+   ================================ */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.sidebar-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* ================================
+   CAMÉRA AMÉLIORÉE
+   ================================ */
+
+.camera-container {
+  position: relative;
+}
+
+.camera-status {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.camera-status.active {
+  background: #dcfce7;
   color: #166534;
-  border-left: 4px solid #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }
 
-.Toastify__toast--error {
-  background-color: #fef2f2;
-  color: #b91c1c;
-  border-left: 4px solid #ef4444;
+.camera-status.inactive {
+  background: #fef2f2;
+  color: #991b1b;
 }
 
-.Toastify__toast--warning {
-  background-color: #fffbeb;
-  color: #92400e;
-  border-left: 4px solid #f59e0b;
+.camera-video {
+  width: 100%;
+  border-radius: 12px;
+  background: #1f2937;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.Toastify__toast--info {
-  background-color: #eff6ff;
-  color: #1e40af;
-  border-left: 4px solid #3b82f6;
+.camera-video:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
 }
 
-/* =============================================================================
-   18. SÉCURITÉ ET PRÉVENTION DE MANIPULATION
-   ============================================================================= */
-.video-body * {
-  user-select: none;
-  -webkit-user-select: none;
-  pointer-events: none;
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4/3;
+  background: #f3f4f6;
+  border-radius: 12px;
+  color: #6b7280;
+  gap: 12px;
+  text-align: center;
 }
 
-/* =============================================================================
-   19. RESPONSIVE DESIGN
-   ============================================================================= */
+.camera-error {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
 
-/* Desktop Large (1200px+) */
+.retry-button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* ================================
+   SÉCURITÉ
+   ================================ */
+
+.security-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hand-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.hand-status.active {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+
+.hand-status.inactive {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  animation: pulse 2s infinite;
+}
+
+.phase-info {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #64748b;
+  text-align: center;
+}
+
+.violations-warning {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  animation: pulse 3s infinite;
+}
+
+/* ================================
+   STATISTIQUES
+   ================================ */
+
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: #64748b;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.stat-value.good {
+  color: #16a34a;
+}
+
+.stat-value.warning {
+  color: #f59e0b;
+}
+
+.stat-value.danger {
+  color: #dc2626;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+
 @media (max-width: 1200px) {
   .test-layout {
-    grid-template-columns: 1fr 1.5fr;
-    grid-template-rows: auto 1fr;
-  }
-  
-  .questions-section {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
-  }
-  
-  .center-video-section {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-  }
-  
-  .chat-section {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    max-height: 300px;
-  }
-
-  .face-guide-circle {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .detection-status {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-  
-  .verification-status {
-    max-width: 450px;
+    grid-template-columns: 1fr 320px;
   }
 }
 
-/* Tablet (992px) */
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   .test-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    height: auto;
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   
-  .center-video-section {
-    height: 400px;
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 8px;
   }
   
-  .chat-section {
-    max-height: 300px;
+  .sidebar-card {
+    min-width: 280px;
+    flex-shrink: 0;
   }
 }
 
-/* Tablet Small (768px) */
 @media (max-width: 768px) {
+  .psychological-test-container {
+    padding: 12px;
+  }
+  
   .test-header {
     flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 12px 16px;
-  }
-  
-  .test-title-container {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .test-header h1 {
-    font-size: 1.2rem;
-  }
-  
-  .center-video-section {
-    height: 350px;
-  }
-  
-  .face-guide-circle {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .verification-step .step-label {
-    font-size: 0.75rem;
-  }
-  
-  .verification-status::before {
-    top: 20px;
-  }
-  
-  .verification-status {
-    max-width: 350px;
-  }
-  
-  .step-indicator {
-    width: 24px;
-    height: 24px;
-    font-size: 0.8rem;
-  }
-  
-  .intro-card, .completion-card {
-    padding: 20px;
-  }
-}
-
-/* Mobile Large (576px) */
-@media (max-width: 576px) {
-  .test-content {
-    padding: 12px;
-  }
-  
-  .center-video-section {
-    height: 280px;
-  }
-  
-  .face-guide-circle {
-    width: 120px;
-    height: 120px;
-    border-width: 2px;
-  }
-  
-  .face-guide-text {
-    font-size: 0.75rem;
-    padding: 6px 12px;
-  }
-  
-  .verification-status {
-    flex-direction: column;
-    gap: 20px;
-    align-items: flex-start;
-  }
-  
-  .verification-status::before {
-    left: 12px;
-    right: auto;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    height: auto;
-  }
-  
-  .verification-step {
-    flex-direction: row;
-    width: 100%;
-    padding-left: 40px;
-  }
-  
-  .intro-detail {
-    padding: 12px;
-  }
-  
-  .intro-card h2, .completion-card h2 {
-    font-size: 1.5rem;
-  }
-  
-  .question-container {
+    text-align: center;
     padding: 16px;
   }
   
-  .question-text {
-    font-size: 1.1rem;
+  .test-title {
+    font-size: 20px;
   }
   
-  .next-button {
-    padding: 10px 16px;
-    font-size: 0.9rem;
+  .question-section {
+    padding: 24px 16px;
   }
   
-  .emotions-container {
+  .question-header {
     flex-direction: column;
-    gap: 8px;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .question-badges {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+  
+  .vocal-controls {
+    flex-direction: column;
+  }
+  
+  .analysis-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
+    flex-direction: column;
+  }
+  
+  .sidebar-card {
+    min-width: unset;
   }
 }
 
-/* =============================================================================
-   20. SUPPORT TACTILE
-   ============================================================================= */
-@media (hover: none) {
-  .video-button:active {
-    transform: scale(0.95);
+@media (max-width: 480px) {
+  .psychological-test-container {
+    padding: 8px;
+  }
+  
+  .test-header {
+    padding: 12px;
+  }
+  
+  .question-section {
+    padding: 20px 12px;
+  }
+  
+  .question-text {
+    font-size: 18px;
+  }
+  
+  .phase-indicator {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+}
+
+/* ================================
+   ANIMATIONS PERSONNALISÉES
+   ================================ */
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
+}
+
+.phase-indicator.active {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.control-button.recording {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* ================================
+   THÈME SOMBRE (OPTIONNEL)
+   ================================ */
+
+@media (prefers-color-scheme: dark) {
+  .psychological-test-container {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  }
+  
+  .test-header,
+  .question-section,
+  .sidebar-card {
+    background: #1f2937;
+    color: #f9fafb;
+    border: 1px solid #374151;
+  }
+  
+  .question-text-container {
+    background: #111827;
+    border-color: #374151;
+  }
+  
+  .transcript-container,
+  .voice-analysis {
+    background: #0f172a;
+    border-color: #1e293b;
+  }
+  
+  .control-button {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .camera-placeholder {
+    background: #374151;
+    color: #9ca3af;
+  }
+}
+
+/* ================================
+   ACCESSIBILITÉ
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles pour l'accessibilité */
+.control-button:focus,
+.retry-button:focus,
+.back-button:focus {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* ================================
+   PRINT STYLES
+   ================================ */
+
+@media print {
+  .psychological-test-container {
+    background: white;
+    color: black;
+  }
+  
+  .sidebar,
+  .vocal-controls,
+  .camera-container {
+    display: none;
+  }
+  
+  .test-layout {
+    grid-template-columns: 1fr;
   }
 }

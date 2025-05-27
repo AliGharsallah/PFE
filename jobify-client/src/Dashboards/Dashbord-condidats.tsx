@@ -30,7 +30,6 @@ import { jobService } from '../services/api';
 import jobify_logo from '../assets/jobify-logo.svg';
 import { toast } from 'react-toastify';
 
-
 // Interface pour les offres d'emploi
 interface Job {
   _id: string;
@@ -48,8 +47,58 @@ const CandidateDashboard: React.FC = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user, refreshUserData } = useAuth();
+
+  // Debug: afficher les informations utilisateur dans la console
+  useEffect(() => {
+    console.log('Candidate user data:', user);
+    if (user?.role === 'candidate') {
+      console.log('Profile image path:', user?.profileImage);
+      console.log('Candidate name:', user?.name);
+    }
+  }, [user]);
+
+  // Rafraîchir les données utilisateur si nécessaire
+  useEffect(() => {
+    if (user?.isAuthenticated && (!user.name || !user.email)) {
+      console.log('Candidate data incomplete, refreshing...');
+      refreshUserData?.();
+    }
+  }, [user, refreshUserData]);
+
+  // Fonction pour construire l'URL de l'image
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) return null;
+    
+    // Si l'image commence par http, c'est déjà une URL complète
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    // Si le chemin commence par '/uploads/', c'est un chemin relatif depuis le serveur
+    if (imagePath.startsWith('/uploads/')) {
+      const API_BASE_URL = 'http://localhost:5000';
+      return `${API_BASE_URL}${imagePath}`;
+    }
+    
+    // Si c'est juste un nom de fichier
+    const API_BASE_URL = 'http://localhost:5000';
+    return `${API_BASE_URL}/uploads/${imagePath}`;
+  };
+
+  // Données du candidat
+  const candidateImage = getImageUrl(user?.profileImage);
+  const candidateName = user?.name || "Candidat";
+
+  // Debug: afficher l'image finale
+  useEffect(() => {
+    console.log('Final candidate image URL:', candidateImage);
+    console.log('Candidate name displayed:', candidateName);
+    console.log('Image error state:', imageError);
+  }, [candidateImage, candidateName, imageError]);
 
   // Chargement initial des offres d'emploi
   useEffect(() => {
@@ -82,6 +131,17 @@ const CandidateDashboard: React.FC = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  // Gestion d'erreur d'image
+  const handleImageError = () => {
+    console.log('Candidate image failed to load:', candidateImage);
+    setImageError(true);
+  };
+
+  const handleImageLoad = () => {
+    console.log('Candidate image loaded successfully:', candidateImage);
+    setImageError(false);
   };
   
   // Composant pour afficher le tableau de bord principal
@@ -241,63 +301,91 @@ const CandidateDashboard: React.FC = () => {
           </button>
         )}
         
-        <img src={jobify_logo} className="Jobify-logo-condidate" alt="Jobify Logo" />
-        <ul className="sidebar-menu">
-          <li 
-            onClick={() => {
-              setActiveTab('home');
-              if (mobileMenuOpen) toggleMobileMenu();
-            }} 
-            className={activeTab === 'home' ? 'active' : ''}
-          >
-            <Home size={20} /> <span>Accueil</span>
-          </li>
-          <li 
-            onClick={() => {
-              setActiveTab('offers');
-              if (mobileMenuOpen) toggleMobileMenu();
-            }} 
-            className={activeTab === 'offers' ? 'active' : ''}
-          >
-            <Briefcase size={20} /> <span>Offres</span>
-          </li>
-          <li 
-            onClick={() => {
-              setActiveTab('applications');
-              if (mobileMenuOpen) toggleMobileMenu();
-            }} 
-            className={activeTab === 'applications' ? 'active' : ''}
-          >
-            <ClipboardList size={20} /> <span>Mes candidatures</span>
-          </li>
-          <li 
-            onClick={() => {
-              setActiveTab('profile');
-              if (mobileMenuOpen) toggleMobileMenu();
-            }} 
-            className={activeTab === 'profile' ? 'active' : ''}
-          >
-            <User size={20} /> <span>Profil</span>
-          </li>
-          <li 
-            onClick={() => {
-              setActiveTab('settings');
-              if (mobileMenuOpen) toggleMobileMenu();
-            }} 
-            className={activeTab === 'settings' ? 'active' : ''}
-          >
-            <Settings size={20} /> <span>Paramètres</span>
-          </li>
-          <li 
-            className="logout" 
-            onClick={() => {
-              handleLogout();
-              if (mobileMenuOpen) toggleMobileMenu();
-            }}
-          >
-            <LogOut size={20} /> <span>Déconnexion</span>
-          </li>
-        </ul>
+        <div className="sidebar-content">
+          <img src={jobify_logo} className="Jobify-logo-condidate" alt="Jobify Logo" />
+          
+          <ul className="sidebar-menu">
+            <li 
+              onClick={() => {
+                setActiveTab('home');
+                if (mobileMenuOpen) toggleMobileMenu();
+              }} 
+              className={activeTab === 'home' ? 'active' : ''}
+            >
+              <Home size={20} /> <span>Accueil</span>
+            </li>
+            <li 
+              onClick={() => {
+                setActiveTab('offers');
+                if (mobileMenuOpen) toggleMobileMenu();
+              }} 
+              className={activeTab === 'offers' ? 'active' : ''}
+            >
+              <Briefcase size={20} /> <span>Offres</span>
+            </li>
+            <li 
+              onClick={() => {
+                setActiveTab('applications');
+                if (mobileMenuOpen) toggleMobileMenu();
+              }} 
+              className={activeTab === 'applications' ? 'active' : ''}
+            >
+              <ClipboardList size={20} /> <span>Mes candidatures</span>
+            </li>
+            <li 
+              onClick={() => {
+                setActiveTab('profile');
+                if (mobileMenuOpen) toggleMobileMenu();
+              }} 
+              className={activeTab === 'profile' ? 'active' : ''}
+            >
+              <User size={20} /> <span>Profil</span>
+            </li>
+            <li 
+              onClick={() => {
+                setActiveTab('settings');
+                if (mobileMenuOpen) toggleMobileMenu();
+              }} 
+              className={activeTab === 'settings' ? 'active' : ''}
+            >
+              <Settings size={20} /> <span>Paramètres</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Footer avec info candidat et déconnexion */}
+        <div className="candidate-sidebar-footer">
+          <div className="candidate-info">
+            <div className="candidate-avatar-container">
+              {candidateImage && !imageError ? (
+                <img
+                  src={candidateImage}
+                  alt={`Photo de ${candidateName}`}
+                  className="candidate-avatar"
+                  onError={handleImageError}
+                  onLoad={handleImageLoad}
+                />
+              ) : (
+                // Fallback avec icône utilisateur
+                <div className="candidate-avatar-fallback">
+                  <User size={24} color="#666" />
+                </div>
+              )}
+            </div>
+            <div className="candidate-details">
+              <span className="candidate-name" title={candidateName}>
+                {candidateName}
+              </span>
+              <span className="candidate-role">
+                Candidat
+              </span>
+            </div>
+          </div>
+          <button className="candidate-logout-btn" onClick={handleLogout}>
+            <LogOut size={18} />
+            <span>Déconnexion</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Content */}

@@ -1,7 +1,6 @@
-// controllers/technicalTestController.js
 const TechnicalTest = require('../models/TechnicalTest');
-const Application = require('../models/application');
-const Job = require('../models/job');
+const Application = require('../models/Application'); // ✅ Import seulement
+const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError, UnauthenticatedError } = require('../errors');
 const { generateTechnicalTest, evaluateCodeSolution, checkOllamaAvailability } = require('../utils/aiService');
@@ -188,7 +187,6 @@ function calculateTestSimilarity(questions1, questions2) {
   return similarQuestions / questions1.length;
 }
 
-// Questions par défaut en cas d'échec du service IA
 // Questions par défaut en cas d'échec du service IA
 function getDefaultQuestionsDirectly(job, existingTests = [], seed = 1) {
   console.log('📋 Génération directe des questions par défaut avec variété');
@@ -395,7 +393,7 @@ function getDefaultQuestionsDirectly(job, existingTests = [], seed = 1) {
   return selectedQuestions;
 }
 
-// Soumettre les réponses au test - Avec évaluation IA
+// ✅ FONCTION CORRIGÉE - Soumettre les réponses au test
 const submitTest = async (req, res) => {
   const { id: testId } = req.params;
   const { answers } = req.body;
@@ -494,14 +492,15 @@ const submitTest = async (req, res) => {
       throw new NotFoundError('Test non trouvé lors de la mise à jour');
     }
     
-    // Mettre à jour la candidature avec findByIdAndUpdate
+    // ✅ CORRECTION PRINCIPALE - Mettre à jour la candidature avec le testId
     const application = await Application.findByIdAndUpdate(
       test.application,
       {
         status: 'test_completed',
         testResults: {
           score: percentage,
-          completedAt: new Date()
+          completedAt: new Date(),
+          testId: test._id  // ✅ AJOUT CRUCIAL - Sauvegarder l'ID du test
         }
       },
       { 
@@ -510,6 +509,7 @@ const submitTest = async (req, res) => {
       }
     );
     
+    console.log('✅ Candidature mise à jour avec testId:', test._id);
     console.log(`✅ Test complété avec un score de ${percentage.toFixed(2)}%`);
     
     res.status(StatusCodes.OK).json({
@@ -806,6 +806,51 @@ const checkAIServiceHealth = async (req, res) => {
   }
 };
 
+// ✅ NOUVELLE FONCTION - Récupérer un test technique via l'ID de candidature
+const getTestByApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+    console.log('🔍 Recherche test pour candidature:', applicationId);
+
+    // Récupérer la candidature avec le testId
+    const application = await Application.findById(applicationId);
+    if (!application) {
+      return res.status(404).json({ message: 'Candidature non trouvée' });
+    }
+
+    console.log('📋 Candidature trouvée:', {
+      id: application._id,
+      testId: application.testResults?.testId
+    });
+
+    // Vérifier si un test technique existe pour cette candidature
+    if (!application.testResults?.testId) {
+      return res.status(404).json({ message: 'Aucun test technique associé à cette candidature' });
+    }
+
+    // Récupérer le test technique
+    const test = await TechnicalTest.findById(application.testResults.testId);
+    if (!test) {
+      return res.status(404).json({ message: 'Test technique non trouvé' });
+    }
+
+    console.log('✅ Test technique trouvé:', test._id);
+
+    res.status(200).json({
+      test,
+      message: 'Test technique récupéré avec succès'
+    });
+
+  } catch (error) {
+    console.error('❌ Erreur getTestByApplication:', error);
+    res.status(500).json({ 
+      message: 'Erreur serveur lors de la récupération du test',
+      error: error.message 
+    });
+  }
+};
+
+// ✅ EXPORTS CORRIGÉS - Toutes les fonctions exportées
 module.exports = {
   createTest,
   submitTest,
@@ -813,5 +858,6 @@ module.exports = {
   startTest,
   analyzeResume,
   getTestResults,
-  checkAIServiceHealth
+  checkAIServiceHealth,
+  getTestByApplication  // ✅ AJOUT CRUCIAL
 };

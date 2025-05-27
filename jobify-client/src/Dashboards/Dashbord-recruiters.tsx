@@ -8,7 +8,6 @@ import CandidatesContent from '../components/recruiter/CandidatesContent';
 import StatisticsContent from '../components/recruiter/StatisticsContent';
 import SettingsContent from '../components/recruiter/SettingsContent';
 
-
 // Icônes
 import {
   Bell,
@@ -19,7 +18,8 @@ import {
   BarChart3,
   LogOut,
   X,
-  Menu
+  Menu,
+  Building2 // Icône par défaut pour l'entreprise
 } from 'lucide-react';
 
 import { jobService, applicationService } from '../services/api';
@@ -59,18 +59,74 @@ const Dashboard: React.FC = () => {
   const [activeJobs, setActiveJobs] = useState<Job[]>([]);
   const [recentApplications, setRecentApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
   // État pour la navigation
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigate = useNavigate();
-  const { logout, user } = useAuth();
+  const { logout, user, refreshUserData } = useAuth();
 
-  // Données de l'entreprise (à remplacer par des données dynamiques)
-const userProfileImage = user?.profileImage || '/path/to/proxym_logo.jpg';
-const companyName = user?.companyInfo?.companyName || "Entreprise";
-const userRole = user.role === 'recruiter' ? "Recruteur" : "Utilisateur";
+  // Debug: afficher les informations utilisateur dans la console
+  useEffect(() => {
+    console.log('Auth user data:', user);
+    if (user?.role === 'recruiter') {
+      console.log('Company logo path:', user?.companyInfo?.companyLogo);
+      console.log('Profile image path:', user?.profileImage);
+      console.log('Company name:', user?.companyInfo?.companyName);
+    }
+  }, [user]);
+
+  // Rafraîchir les données utilisateur si nécessaire
+  useEffect(() => {
+    if (user?.isAuthenticated && (!user.name || !user.email)) {
+      console.log('User data incomplete, refreshing...');
+      refreshUserData?.();
+    }
+  }, [user, refreshUserData]);
+
+  // Fonction pour construire l'URL de l'image
+  const getImageUrl = (imagePath: string | undefined) => {
+    if (!imagePath) return null;
+    
+    // Si l'image commence par http, c'est déjà une URL complète
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    
+    // Si le chemin commence par '/uploads/', c'est un chemin relatif depuis le serveur
+    if (imagePath.startsWith('/uploads/')) {
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      return `${API_BASE_URL}${imagePath}`;
+    }
+    
+    // Si c'est juste un nom de fichier
+const API_BASE_URL = 'http://localhost:5000';
+    return `${API_BASE_URL}/uploads/${imagePath}`;
+  };
+
+  // Fonction pour obtenir l'image appropriée selon le rôle
+  const getUserDisplayImage = () => {
+    if (user?.role === 'recruiter') {
+      // Pour un recruteur, prioriser le logo de l'entreprise
+      return user?.companyInfo?.companyLogo || user?.profileImage;
+    }
+    // Pour un candidat, utiliser l'image de profil
+    return user?.profileImage;
+  };
+
+  // Données de l'entreprise avec gestion d'image améliorée
+  const userDisplayImage = getImageUrl(getUserDisplayImage());
+  const companyName = user?.companyInfo?.companyName || user?.name || "Mon Entreprise";
+  const userRole = user?.role === 'recruiter' ? "Recruteur" : "Utilisateur";
+
+  // Debug: afficher l'image finale
+  useEffect(() => {
+    console.log('Final image URL:', userDisplayImage);
+    console.log('Company name displayed:', companyName);
+    console.log('Image error state:', imageError);
+  }, [userDisplayImage, companyName, imageError]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,6 +169,17 @@ const userRole = user.role === 'recruiter' ? "Recruteur" : "Utilisateur";
   const handleLogout = () => {
     logout();
     navigate('/auth');
+  };
+
+  // Gestion d'erreur d'image
+  const handleImageError = () => {
+    console.log('Image failed to load:', userDisplayImage);
+    setImageError(true);
+  };
+
+  const handleImageLoad = () => {
+    console.log('Image loaded successfully:', userDisplayImage);
+    setImageError(false);
   };
 
   // Fonction pour afficher le contenu en fonction de l'onglet actif
@@ -244,17 +311,29 @@ const userRole = user.role === 'recruiter' ? "Recruteur" : "Utilisateur";
         {/* Footer avec info entreprise et déconnexion */}
         <div className="sidebar-footer">
           <div className="company-info">
-            <img
-              src={userProfileImage}
-              alt="Logo Entreprise"
-              className="company-logo"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/path/to/proxym_logo.jpg';
-              }}
-            />
-            <div>
-              <span className="company-name">{companyName}</span>
-              <span className="company-role">{userRole}</span>
+            <div className="company-logo-container">
+              {userDisplayImage && !imageError ? (
+                <img
+                  src={userDisplayImage}
+                  alt={`Logo ${companyName}`}
+                  className="company-logo"
+                  onError={handleImageError}
+                  onLoad={handleImageLoad}
+                />
+              ) : (
+                // Fallback avec icône
+                <div className="company-logo-fallback">
+                  <Building2 size={24} color="#666" />
+                </div>
+              )}
+            </div>
+            <div className="company-details">
+              <span className="company-name" title={companyName}>
+                {companyName}
+              </span>
+              <span className="company-role">
+                {userRole}
+              </span>
             </div>
           </div>
           <button className="logout-btn" onClick={handleLogout}>

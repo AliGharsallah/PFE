@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Eye, Search, Filter, UserCheck, Mail, Phone, FileText, Check, X } from 'lucide-react';
+import { Eye, Search, Filter, UserCheck, Mail, Phone, FileText, Check, X, Download } from 'lucide-react';
+import { toast } from 'react-toastify';
 import '../../Styles/CandidatesContent.css';
 
 interface CandidatesContentProps {
@@ -11,6 +12,7 @@ interface CandidatesContentProps {
 const CandidatesContent: React.FC<CandidatesContentProps> = ({ applications, loading, navigate }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'pending', 'approved', 'rejected'
+  const [downloadingCV, setDownloadingCV] = useState<string | null>(null);
 
   const handleViewApplication = (applicationId: string) => {
     navigate(`/applications/${applicationId}`);
@@ -27,6 +29,100 @@ const CandidatesContent: React.FC<CandidatesContentProps> = ({ applications, loa
     if (window.confirm('Êtes-vous sûr de vouloir rejeter ce candidat ?')) {
       // Ajouter la logique de rejet ici
       alert('Fonctionnalité de rejet à implémenter');
+    }
+  };
+
+  // Fonction pour télécharger le CV
+  const handleDownloadCV = async (application: any) => {
+    if (!application.resume) {
+      toast.error('Aucun CV disponible pour ce candidat');
+      return;
+    }
+
+    try {
+      setDownloadingCV(application._id);
+      
+      // Créer l'URL complète du CV
+      const cvUrl = `http://localhost:5000/${application.resume}`;
+      
+      // Méthode 1: Téléchargement direct via lien
+      const link = document.createElement('a');
+      link.href = cvUrl;
+      link.download = `CV_${application.candidate.name.replace(/\s+/g, '_')}.pdf`;
+      link.target = '_blank';
+      
+      // Ajouter le lien au DOM temporairement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.success(`CV de ${application.candidate.name} téléchargé avec succès`);
+      
+    } catch (error) {
+      console.error('Erreur lors du téléchargement du CV:', error);
+      
+      // Méthode de fallback: ouvrir dans un nouvel onglet
+      try {
+        const cvUrl = `http://localhost:5000/${application.resume}`;
+        window.open(cvUrl, '_blank');
+        toast.info(`CV de ${application.candidate.name} ouvert dans un nouvel onglet`);
+      } catch (fallbackError) {
+        toast.error('Erreur lors du téléchargement du CV');
+      }
+    } finally {
+      setDownloadingCV(null);
+    }
+  };
+
+  // Alternative avec fetch pour téléchargement authentifié
+  const handleDownloadCVWithAuth = async (application: any) => {
+    if (!application.resume) {
+      toast.error('Aucun CV disponible pour ce candidat');
+      return;
+    }
+
+    try {
+      setDownloadingCV(application._id);
+      
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/${application.resume}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors du téléchargement');
+      }
+
+      // Obtenir le blob du fichier
+      const blob = await response.blob();
+      
+      // Créer l'URL de téléchargement
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Extraire l'extension du fichier ou utiliser .pdf par défaut
+      const fileExtension = application.resume.split('.').pop() || 'pdf';
+      link.download = `CV_${application.candidate.name.replace(/\s+/g, '_')}.${fileExtension}`;
+      
+      // Effectuer le téléchargement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Nettoyer l'URL
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(`CV de ${application.candidate.name} téléchargé avec succès`);
+      
+    } catch (error) {
+      console.error('Erreur lors du téléchargement du CV:', error);
+      toast.error('Erreur lors du téléchargement du CV');
+    } finally {
+      setDownloadingCV(null);
     }
   };
 
@@ -189,12 +285,27 @@ const CandidatesContent: React.FC<CandidatesContentProps> = ({ applications, loa
                     </td>
                     <td>
                       <div className="actions-container">
+                        {/* Bouton Voir détails - INCHANGÉ */}
                         <button
                           className="action-button view-button"
                           onClick={() => handleViewApplication(application._id)}
                           title="Voir détails"
                         >
                           <Eye size={16} />
+                        </button>
+                        
+                        {/* Bouton Télécharger CV - NOUVEAU */}
+                        <button
+                          className="action-button download-button"
+                          onClick={() => handleDownloadCV(application)}
+                          title={`Télécharger CV de ${application.candidate.name}`}
+                          disabled={downloadingCV === application._id || !application.resume}
+                        >
+                          {downloadingCV === application._id ? (
+                            <div className="download-spinner"></div>
+                          ) : (
+                            <Download size={16} />
+                          )}
                         </button>
                         
                         {application.status === 'pending' && (
@@ -216,13 +327,6 @@ const CandidatesContent: React.FC<CandidatesContentProps> = ({ applications, loa
                             </button>
                           </>
                         )}
-                        
-                        <button
-                          className="action-button download-button"
-                          title="Télécharger CV"
-                        >
-                          <FileText size={16} />
-                        </button>
                       </div>
                     </td>
                   </tr>

@@ -13,12 +13,41 @@ const generateToken = (user) => {
 exports.register = async (req, res) => {
   const { name, email, password, role } = req.body;
   
-  // Vérifier si tous les champs sont présents
+  // Vérifier si tous les champs de base sont présents
   if (!name || !email || !password) {
     return res.status(400).json({ message: "Tous les champs sont requis" });
   }
 
   try {
+    // Parser les données companyInfo et candidateInfo si elles sont des strings JSON
+    let companyInfo = req.body.companyInfo;
+    let candidateInfo = req.body.candidateInfo;
+    
+    if (typeof companyInfo === 'string') {
+      try {
+        companyInfo = JSON.parse(companyInfo);
+      } catch (e) {
+        companyInfo = null;
+      }
+    }
+    
+    if (typeof candidateInfo === 'string') {
+      try {
+        candidateInfo = JSON.parse(candidateInfo);
+      } catch (e) {
+        candidateInfo = null;
+      }
+    }
+
+    // Validation spécifique selon le rôle
+    if (role === 'recruiter') {
+      if (!companyInfo || !companyInfo.companyName) {
+        return res.status(400).json({ 
+          message: "Le nom de l'entreprise est requis pour les recruteurs" 
+        });
+      }
+    }
+
     const userExists = await User.findOne({ email });
     if (userExists)
       return res.status(400).json({ message: "User already exists" });
@@ -32,17 +61,17 @@ exports.register = async (req, res) => {
     };
 
     // Ajouter les informations conditionnelles selon le rôle
-    if (role === 'recruiter' && req.body.companyInfo) {
-      userData.companyInfo = req.body.companyInfo;
-    } else if (role === 'candidate' && req.body.candidateInfo) {
-      userData.candidateInfo = req.body.candidateInfo;
+    if (role === 'recruiter' && companyInfo) {
+      userData.companyInfo = companyInfo;
+    } else if (role === 'candidate' && candidateInfo) {
+      userData.candidateInfo = candidateInfo;
     }
 
     const newUser = await User.create(userData);
     const token = generateToken(newUser);
     res.status(201).json({ token });
   } catch (err) {
-    console.error(err); // Pour voir l'erreur dans la console du serveur
+    console.error(err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };

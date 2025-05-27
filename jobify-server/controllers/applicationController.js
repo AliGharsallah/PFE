@@ -1,5 +1,5 @@
 // controllers/applicationController.js
-const Application = require('../models/application');
+const Application = require('../models/Application');
 const Job = require('../models/job');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError, UnauthenticatedError } = require('../errors');

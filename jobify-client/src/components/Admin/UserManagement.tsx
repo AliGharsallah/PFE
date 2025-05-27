@@ -1,44 +1,50 @@
-// UserManagement.tsx
+// UserManagement.tsx - Version avec Box (sans Grid)
 import React, { useState, useEffect } from 'react';
 import { 
-  Typography, Box, Grid, Paper, Table, TableBody, TableCell, 
+  Typography, Box, Paper, Table, TableBody, TableCell, 
   TableContainer, TableHead, TableRow, Button, TextField,
   Select, MenuItem, FormControl, InputLabel, Dialog,
   DialogTitle, DialogContent, DialogActions, IconButton,
-  Chip, CircularProgress
+  Chip, CircularProgress, Pagination, Alert
 } from '@mui/material';
 import { 
   Add as AddIcon, 
   Edit as EditIcon, 
   Delete as DeleteIcon,
   Search as SearchIcon,
-  FilterList as FilterIcon
+  FilterList as FilterIcon,
+  Refresh as RefreshIcon
 } from '@mui/icons-material';
+import { userService } from '../../services/api';
 import '../../Styles/UserManagement.css';
 
-// Données utilisateur de test
-const mockUsers = [
-  { id: 1, email: "admin@example.com", nom: "Admin", prenom: "Super", role: "Admin", dateInscription: "2024-01-01", statut: "Actif" },
-  { id: 2, email: "recruteur1@company.com", nom: "Dupont", prenom: "Marie", role: "Recruteur", dateInscription: "2025-02-15", statut: "Actif" },
-  { id: 3, email: "recruteur2@company.com", nom: "Martin", prenom: "Jean", role: "Recruteur", dateInscription: "2025-03-10", statut: "Actif" },
-  { id: 4, email: "candidat1@gmail.com", nom: "Petit", prenom: "Sophie", role: "Candidat", dateInscription: "2025-04-05", statut: "Actif" },
-  { id: 5, email: "candidat2@outlook.com", nom: "Lefebvre", prenom: "Thomas", role: "Candidat", dateInscription: "2025-04-20", statut: "Inactif" },
-  { id: 6, email: "candidat3@hotmail.com", nom: "Dubois", prenom: "Julie", role: "Candidat", dateInscription: "2025-05-01", statut: "Actif" },
-  { id: 7, email: "recruteur3@company.com", nom: "Moreau", prenom: "Philippe", role: "Recruteur", dateInscription: "2025-04-15", statut: "Inactif" },
-];
+interface User {
+  id: string;
+  email: string;
+  nom: string;
+  prenom: string;
+  role: string;
+  dateInscription: string;
+  statut: string;
+  profileImage?: string;
+  companyInfo?: any;
+  candidateInfo?: any;
+}
 
 interface UserManagementProps {
   showNotification: (message: string, severity?: string) => void;
 }
 
 const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRole, setFilterRole] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [dialogAction, setDialogAction] = useState<'add' | 'edit'>('add');
-  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [formData, setFormData] = useState({
     email: '',
     nom: '',
@@ -47,19 +53,46 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
     statut: 'Actif'
   });
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalUsers, setTotalUsers] = useState(0);
 
+  // Chargement initial des utilisateurs
   useEffect(() => {
-    // Simuler un chargement de données depuis une API
-    setTimeout(() => {
-      setUsers(mockUsers);
-      setFilteredUsers(mockUsers);
-      setLoading(false);
-    }, 1000);
-  }, []);
+    fetchUsers();
+  }, [page]);
 
+  // Filtrage des utilisateurs
   useEffect(() => {
     filterUsers();
   }, [searchQuery, filterRole, users]);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await userService.getAllUsers({
+        page,
+        limit: 10
+      });
+      
+      if (response.data.users) {
+        setUsers(response.data.users);
+        setTotalPages(response.data.pagination?.totalPages || 1);
+        setTotalUsers(response.data.pagination?.totalUsers || 0);
+      }
+    } catch (error: any) {
+      console.error('Error fetching users:', error);
+      const errorMessage = error.response?.data?.message || 'Erreur lors du chargement des utilisateurs';
+      setError(errorMessage);
+      showNotification(errorMessage, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filterUsers = () => {
     let filtered = [...users];
@@ -74,14 +107,14 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
     }
     
     // Filtre par rôle
-    if (filterRole) {
+    if (filterRole && filterRole !== 'Tous') {
       filtered = filtered.filter(user => user.role === filterRole);
     }
     
     setFilteredUsers(filtered);
   };
 
-  const handleOpenDialog = (action: 'add' | 'edit', user: any = null) => {
+  const handleOpenDialog = (action: 'add' | 'edit', user: User | null = null) => {
     setDialogAction(action);
     setSelectedUser(user);
     
@@ -108,6 +141,17 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setError(null);
+  };
+
+  const handleOpenDeleteDialog = (user: User) => {
+    setUserToDelete(user);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+    setUserToDelete(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>) => {
@@ -120,34 +164,99 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
     });
   };
 
-  const handleFormSubmit = () => {
-    if (dialogAction === 'add') {
-      const newUser = {
-        id: users.length + 1,
-        ...formData,
-        dateInscription: new Date().toISOString().split('T')[0]
-      };
+  const handleFormSubmit = async () => {
+    try {
+      setSubmitting(true);
+      setError(null);
+
+      // Validation basique
+      if (!formData.email || !formData.nom || !formData.prenom) {
+        setError('Tous les champs obligatoires doivent être remplis');
+        return;
+      }
+
+      if (dialogAction === 'add') {
+        const response = await userService.createUser(formData);
+        
+        if (response.data.user) {
+          // Ajouter le nouvel utilisateur au début de la liste
+          setUsers([response.data.user, ...users]);
+          setTotalUsers(totalUsers + 1);
+          showNotification('Utilisateur ajouté avec succès', 'success');
+          
+          // Afficher le mot de passe temporaire si disponible
+          if (response.data.tempPassword) {
+            showNotification(`Mot de passe temporaire: ${response.data.tempPassword}`, 'info');
+          }
+        }
+      } else if (dialogAction === 'edit' && selectedUser) {
+        const response = await userService.updateUser(selectedUser.id, formData);
+        
+        if (response.data.user) {
+          const updatedUsers = users.map(user => 
+            user.id === selectedUser.id ? response.data.user : user
+          );
+          setUsers(updatedUsers);
+          showNotification('Utilisateur mis à jour avec succès', 'success');
+        }
+      }
       
-      setUsers([...users, newUser]);
-      showNotification("Utilisateur ajouté avec succès", "success");
-    } else if (dialogAction === 'edit' && selectedUser) {
-      const updatedUsers = users.map(user => 
-        user.id === selectedUser.id ? { ...user, ...formData } : user
-      );
-      
-      setUsers(updatedUsers);
-      showNotification("Utilisateur mis à jour avec succès", "success");
+      handleCloseDialog();
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
+      const errorMessage = error.response?.data?.message || 'Erreur lors de la sauvegarde';
+      setError(errorMessage);
+      showNotification(errorMessage, 'error');
+    } finally {
+      setSubmitting(false);
     }
-    
-    handleCloseDialog();
   };
 
-  const handleDeleteUser = (id: number) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) {
-      const updatedUsers = users.filter(user => user.id !== id);
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
+    try {
+      setSubmitting(true);
+      
+      await userService.deleteUser(userToDelete.id);
+      
+      const updatedUsers = users.filter(user => user.id !== userToDelete.id);
       setUsers(updatedUsers);
-      showNotification("Utilisateur supprimé avec succès", "success");
+      setTotalUsers(totalUsers - 1);
+      
+      showNotification('Utilisateur supprimé avec succès', 'success');
+      handleCloseDeleteDialog();
+    } catch (error: any) {
+      console.error('Error deleting user:', error);
+      const errorMessage = error.response?.data?.message || 'Erreur lors de la suppression';
+      showNotification(errorMessage, 'error');
+    } finally {
+      setSubmitting(false);
     }
+  };
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleRefresh = () => {
+    setPage(1);
+    setSearchQuery('');
+    setFilterRole('');
+    fetchUsers();
+  };
+
+  const getRoleChipColor = (role: string) => {
+    switch (role) {
+      case 'Admin': return 'error';
+      case 'Recruteur': return 'primary';
+      case 'Candidat': return 'success';
+      default: return 'default';
+    }
+  };
+
+  const getStatusChipColor = (status: string) => {
+    return status === 'Actif' ? 'success' : 'default';
   };
 
   if (loading) {
@@ -163,15 +272,33 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
 
   return (
     <Box className="user-management-container">
-      <Box className="header-container">
+      {/* En-tête */}
+      <Box className="header-container" sx={{ mb: 3 }}>
         <Typography variant="h5" className="section-title">
-          Gestion des utilisateurs
+          Gestion des utilisateurs ({totalUsers})
         </Typography>
       </Box>
       
-      {/* Filtres et recherche */}
-      <Grid container spacing={2} className="filter-container">
-        <Grid item xs={12} md={4}>
+      {/* Affichage des erreurs */}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
+      
+      {/* Filtres et recherche - AVEC BOX */}
+      <Box 
+        className="filter-container" 
+        sx={{ 
+          mb: 3, 
+          display: 'flex', 
+          gap: 2, 
+          flexWrap: 'wrap',
+          alignItems: 'flex-end'
+        }}
+      >
+        {/* Champ de recherche */}
+        <Box sx={{ flex: '1 1 300px', minWidth: '250px' }}>
           <TextField
             fullWidth
             label="Rechercher un utilisateur"
@@ -184,8 +311,10 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
             }}
             className="search-field"
           />
-        </Grid>
-        <Grid item xs={12} md={3}>
+        </Box>
+        
+        {/* Filtre par rôle */}
+        <Box sx={{ flex: '0 1 200px', minWidth: '180px' }}>
           <FormControl fullWidth variant="outlined" size="small">
             <InputLabel id="filter-role-label">Filtrer par rôle</InputLabel>
             <Select
@@ -201,8 +330,18 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
               <MenuItem value="Candidat">Candidat</MenuItem>
             </Select>
           </FormControl>
-        </Grid>
-        <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        </Box>
+        
+        {/* Boutons d'actions */}
+        <Box sx={{ display: 'flex', gap: 1, flex: '0 0 auto' }}>
+          <Button 
+            variant="outlined" 
+            startIcon={<RefreshIcon />}
+            onClick={handleRefresh}
+            disabled={loading}
+          >
+            Actualiser
+          </Button>
           <Button 
             variant="contained" 
             color="primary" 
@@ -212,15 +351,15 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
           >
             Ajouter un utilisateur
           </Button>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
       
       {/* Tableau des utilisateurs */}
       <TableContainer component={Paper} className="table-container">
         <Table>
           <TableHead className="table-header">
             <TableRow>
-              <TableCell className="header-cell">Nom</TableCell>
+              <TableCell className="header-cell">Nom complet</TableCell>
               <TableCell className="header-cell">Email</TableCell>
               <TableCell className="header-cell">Rôle</TableCell>
               <TableCell className="header-cell">Date d'inscription</TableCell>
@@ -237,7 +376,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
                   <TableCell>
                     <Chip 
                       label={user.role} 
-                      className={`role-chip role-${user.role.toLowerCase()}`}
+                      color={getRoleChipColor(user.role)}
                       size="small"
                     />
                   </TableCell>
@@ -245,7 +384,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
                   <TableCell>
                     <Chip 
                       label={user.statut} 
-                      className={`status-chip status-${user.statut.toLowerCase()}`}
+                      color={getStatusChipColor(user.statut)}
                       size="small"
                     />
                   </TableCell>
@@ -254,13 +393,15 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
                       onClick={() => handleOpenDialog('edit', user)}
                       size="small"
                       className="edit-button"
+                      title="Modifier l'utilisateur"
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton 
-                      onClick={() => handleDeleteUser(user.id)}
+                      onClick={() => handleOpenDeleteDialog(user)}
                       size="small"
                       className="delete-button"
+                      title="Supprimer l'utilisateur"
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -270,8 +411,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
             ) : (
               <TableRow>
                 <TableCell colSpan={6}>
-                  <Typography className="empty-text">
-                    Aucun utilisateur trouvé
+                  <Typography className="empty-text" align="center" sx={{ py: 4 }}>
+                    {searchQuery || filterRole ? 'Aucun utilisateur trouvé avec ces critères' : 'Aucun utilisateur trouvé'}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -279,96 +420,164 @@ const UserManagement: React.FC<UserManagementProps> = ({ showNotification }) => 
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <Box display="flex" justifyContent="center" sx={{ mt: 3 }}>
+          <Pagination 
+            count={totalPages} 
+            page={page} 
+            onChange={handlePageChange}
+            color="primary"
+            showFirstButton
+            showLastButton
+          />
+        </Box>
+      )}
       
-      {/* Dialogue Ajout/Édition utilisateur */}
+      {/* Dialogue Ajout/Édition utilisateur - AVEC BOX */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
         <DialogTitle className="dialog-title">
           {dialogAction === 'add' ? 'Ajouter un utilisateur' : 'Modifier un utilisateur'}
         </DialogTitle>
         <DialogContent className="dialog-content">
-          <Grid container spacing={2}>
-            <Grid item xs={12} className="form-field">
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          
+          {/* Formulaire avec Box */}
+          <Box sx={{ mt: 2 }}>
+            {/* Email */}
+            <Box sx={{ mb: 2 }}>
               <TextField
                 fullWidth
-                label="Email"
+                label="Email *"
                 name="email"
+                type="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 variant="outlined"
                 required
+                disabled={submitting}
               />
-            </Grid>
-            <Grid item xs={12} sm={6} className="form-field">
-              <TextField
-                fullWidth
-                label="Nom"
-                name="nom"
-                value={formData.nom}
-                onChange={handleInputChange}
-                variant="outlined"
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} className="form-field">
-              <TextField
-                fullWidth
-                label="Prénom"
-                name="prenom"
-                value={formData.prenom}
-                onChange={handleInputChange}
-                variant="outlined"
-                required
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} className="form-field">
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="user-role-label">Rôle</InputLabel>
-                <Select
-                  labelId="user-role-label"
-                  name="role"
-                  value={formData.role}
+            </Box>
+            
+            {/* Nom et Prénom sur la même ligne */}
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+              <Box sx={{ flex: 1 }}>
+                <TextField
+                  fullWidth
+                  label="Nom *"
+                  name="nom"
+                  value={formData.nom}
                   onChange={handleInputChange}
-                  label="Rôle"
-                >
-                  <MenuItem value="Admin">Admin</MenuItem>
-                  <MenuItem value="Recruteur">Recruteur</MenuItem>
-                  <MenuItem value="Candidat">Candidat</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6} className="form-field">
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="user-status-label">Statut</InputLabel>
-                <Select
-                  labelId="user-status-label"
-                  name="statut"
-                  value={formData.statut}
+                  variant="outlined"
+                  required
+                  disabled={submitting}
+                />
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <TextField
+                  fullWidth
+                  label="Prénom *"
+                  name="prenom"
+                  value={formData.prenom}
                   onChange={handleInputChange}
-                  label="Statut"
-                >
-                  <MenuItem value="Actif">Actif</MenuItem>
-                  <MenuItem value="Inactif">Inactif</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+                  variant="outlined"
+                  required
+                  disabled={submitting}
+                />
+              </Box>
+            </Box>
+            
+            {/* Rôle et Statut sur la même ligne */}
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+              <Box sx={{ flex: 1 }}>
+                <FormControl fullWidth variant="outlined" disabled={submitting}>
+                  <InputLabel id="user-role-label">Rôle *</InputLabel>
+                  <Select
+                    labelId="user-role-label"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    label="Rôle *"
+                  >
+                    <MenuItem value="Admin">Admin</MenuItem>
+                    <MenuItem value="Recruteur">Recruteur</MenuItem>
+                    <MenuItem value="Candidat">Candidat</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <FormControl fullWidth variant="outlined" disabled={submitting}>
+                  <InputLabel id="user-status-label">Statut</InputLabel>
+                  <Select
+                    labelId="user-status-label"
+                    name="statut"
+                    value={formData.statut}
+                    onChange={handleInputChange}
+                    label="Statut"
+                  >
+                    <MenuItem value="Actif">Actif</MenuItem>
+                    <MenuItem value="Inactif">Inactif</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </Box>
+            
+            {/* Message d'information pour l'ajout */}
             {dialogAction === 'add' && (
-              <Grid item xs={12}>
-                <Typography variant="caption" color="textSecondary">
-                  Un mot de passe temporaire sera généré et envoyé à l'adresse email.
-                </Typography>
-              </Grid>
+              <Alert severity="info" sx={{ mt: 2 }}>
+                Un mot de passe temporaire sera généré automatiquement et affiché après la création.
+              </Alert>
             )}
-          </Grid>
+          </Box>
         </DialogContent>
         <DialogActions className="dialog-actions">
-          <Button onClick={handleCloseDialog}>Annuler</Button>
+          <Button onClick={handleCloseDialog} disabled={submitting}>
+            Annuler
+          </Button>
           <Button 
             onClick={handleFormSubmit} 
             variant="contained" 
             color="primary"
             className="submit-button"
+            disabled={submitting}
           >
-            {dialogAction === 'add' ? 'Ajouter' : 'Enregistrer'}
+            {submitting ? (
+              <CircularProgress size={20} />
+            ) : (
+              dialogAction === 'add' ? 'Ajouter' : 'Enregistrer'
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Dialogue de confirmation de suppression */}
+      <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog} maxWidth="sm">
+        <DialogTitle>Confirmer la suppression</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Êtes-vous sûr de vouloir supprimer l'utilisateur{' '}
+            <strong>{userToDelete?.prenom} {userToDelete?.nom}</strong> ?
+          </Typography>
+          <Typography color="error" sx={{ mt: 2 }}>
+            Cette action est irréversible et supprimera définitivement toutes les données associées à cet utilisateur.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} disabled={submitting}>
+            Annuler
+          </Button>
+          <Button 
+            onClick={handleDeleteUser} 
+            color="error" 
+            variant="contained"
+            disabled={submitting}
+          >
+            {submitting ? <CircularProgress size={20} /> : 'Supprimer'}
           </Button>
         </DialogActions>
       </Dialog>

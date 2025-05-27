@@ -17,10 +17,10 @@ const TechnicalTestPage: React.FC = () => {
   // États pour la gestion des questions
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [phase, setPhase] = useState<'thinking' | 'answering' | 'finished'>('thinking');
-  const [phaseTimer, setPhaseTimer] = useState(60); // 60 secondes pour réfléchir
+  const [phaseTimer, setPhaseTimer] = useState(10); // 60 secondes pour réfléchir
   const [keysPressed, setKeysPressed] = useState<Set<string>>(new Set());
   const [canAnswer, setCanAnswer] = useState(false);
-  const [keysReleasedTimer, setKeysReleasedTimer] = useState<number | null>(null);
+const [keysReleasedTimer, setKeysReleasedTimer] = useState<NodeJS.Timeout | null>(null);
   const [questionSkipped, setQuestionSkipped] = useState(false);
   
   // Définir les touches requises
@@ -180,7 +180,7 @@ const TechnicalTestPage: React.FC = () => {
       setCurrentQuestionIndex(prev => prev + 1);
       setPhase('thinking');
       setCanAnswer(false);
-      setPhaseTimer(60);
+      setPhaseTimer(20);
       setQuestionSkipped(false);
     } else {
       // Test terminé
@@ -197,7 +197,7 @@ const TechnicalTestPage: React.FC = () => {
       setTestStarted(true);
       setCurrentQuestionIndex(0);
       setPhase('thinking');
-      setPhaseTimer(60);
+      setPhaseTimer(20);
       toast.info('Le test a commencé. Placez vos mains sur les touches indiquées!');
     } catch (err) {
       toast.error('Erreur lors du démarrage du test');

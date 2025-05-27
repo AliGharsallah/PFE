@@ -1,42 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Mail, Phone, Building, MapPin, Globe, Save, Eye, EyeOff, Bell, Lock } from 'lucide-react';
 import '../../Styles/SettingsContent.css';
+import { userService } from '../../services/api';
 
 const SettingsContent = () => {
-  // États pour les différentes sections
+  // États
   const [profileData, setProfileData] = useState({
-    fullName: 'John Doe',
-    email: 'john.doe@proxymgroup.com',
-    phone: '+216 12 345 678',
-    jobTitle: 'Directeur RH',
-    department: 'Ressources Humaines',
-    avatar: '' // URL de l'image
+    fullName: '',
+    email: '',
   });
-
   const [companyData, setCompanyData] = useState({
-    name: 'Proxym Group',
-    address: '15 Rue de l\'Innovation, Tunis',
-    website: 'www.proxymgroup.com',
-    phone: '+216 71 123 456',
-    email: 'contact@proxymgroup.com',
-    logo: '' // URL de l'image
+    name: '',
+    address: '',
+    website: '',
+    phone: '',
+    linkedin: '',
+    twitter: '',
   });
-
   const [notificationSettings, setNotificationSettings] = useState({
-    newApplications: true,
-    applicationUpdates: true,
-    jobExpiration: true,
-    weeklyReports: false,
     emailNotifications: true,
-    browserNotifications: false
+    browserNotifications: false,
+    smsNotifications: false
   });
-
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: '',
     showPasswords: false
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Charger les données au montage
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await userService.getProfile();
+        const userData = response.data.user;
+
+        if (userData.role === 'recruiter') {
+          setProfileData({
+            fullName: userData.name || '',
+            email: userData.email || ''
+          });
+
+          setCompanyData({
+            name: userData.companyInfo?.companyName || '',
+            address: `${userData.companyInfo?.address?.street || ''}, ${userData.companyInfo?.address?.city || ''}, ${userData.companyInfo?.address?.country || ''}`,
+            website: userData.companyInfo?.website || '',
+            phone: userData.companyInfo?.contactPhone || '',
+            linkedin: userData.companyInfo?.socialMedia?.linkedin || '',
+            twitter: userData.companyInfo?.socialMedia?.twitter || '',
+          });
+        }
+
+        if (userData.preferences?.notifications) {
+          setNotificationSettings({
+            emailNotifications: userData.preferences.notifications.email || false,
+            browserNotifications: userData.preferences.notifications.push || false,
+            smsNotifications: userData.preferences.notifications.sms || false,
+          });
+        }
+
+        setLoading(false);
+      } catch (err) {
+        console.error('Erreur lors du chargement des données:', err);
+        setError("Impossible de charger les paramètres. Vérifiez votre connexion.");
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Gestionnaires d'événements
   const handleProfileChange = (e) => {
@@ -87,9 +122,17 @@ const SettingsContent = () => {
     alert('Mot de passe mis à jour (simulation)');
   };
 
+  if (loading) {
+    return <div>Chargement...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
+
   return (
     <div className="settings-content">
-      {/* Paramètres du profil */}
+      {/* Section Profil */}
       <div className="card">
         <div className="card-header">
           <h2 className="card-title">Paramètres du profil</h2>
@@ -98,9 +141,7 @@ const SettingsContent = () => {
           <form onSubmit={handleSaveProfile}>
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label">
-                  Nom complet
-                </label>
+                <label className="form-label">Nom complet</label>
                 <div className="input-wrapper">
                   <User size={18} className="input-icon" />
                   <input
@@ -112,11 +153,8 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-
               <div className="form-group">
-                <label className="form-label">
-                  Email professionnel
-                </label>
+                <label className="form-label">Email professionnel</label>
                 <div className="input-wrapper">
                   <Mail size={18} className="input-icon" />
                   <input
@@ -128,70 +166,17 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-
-              <div className="form-group">
-                <label className="form-label">
-                  Téléphone
-                </label>
-                <div className="input-wrapper">
-                  <Phone size={18} className="input-icon" />
-                  <input
-                    type="text"
-                    name="phone"
-                    value={profileData.phone}
-                    onChange={handleProfileChange}
-                    className="form-input"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">
-                  Poste
-                </label>
-                <div className="input-wrapper">
-                  <Building size={18} className="input-icon" />
-                  <input
-                    type="text"
-                    name="jobTitle"
-                    value={profileData.jobTitle}
-                    onChange={handleProfileChange}
-                    className="form-input"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">
-                  Département
-                </label>
-                <div className="input-wrapper">
-                  <Building size={18} className="input-icon" />
-                  <input
-                    type="text"
-                    name="department"
-                    value={profileData.department}
-                    onChange={handleProfileChange}
-                    className="form-input"
-                  />
-                </div>
-              </div>
             </div>
-
             <div className="form-actions">
-              <button 
-                type="submit"
-                className="save-button"
-              >
-                <Save size={16} />
-                Enregistrer les modifications
+              <button type="submit" className="save-button">
+                <Save size={16} /> Enregistrer les modifications
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      {/* Informations entreprise */}
+      {/* Section Entreprise */}
       <div className="card">
         <div className="card-header">
           <h2 className="card-title">Informations de l'entreprise</h2>
@@ -200,9 +185,7 @@ const SettingsContent = () => {
           <form onSubmit={handleSaveCompany}>
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label">
-                  Nom de l'entreprise
-                </label>
+                <label className="form-label">Nom de l'entreprise</label>
                 <div className="input-wrapper">
                   <Building size={18} className="input-icon" />
                   <input
@@ -214,11 +197,8 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-
               <div className="form-group">
-                <label className="form-label">
-                  Adresse
-                </label>
+                <label className="form-label">Adresse</label>
                 <div className="input-wrapper">
                   <MapPin size={18} className="input-icon" />
                   <input
@@ -230,11 +210,8 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-
               <div className="form-group">
-                <label className="form-label">
-                  Site web
-                </label>
+                <label className="form-label">Site web</label>
                 <div className="input-wrapper">
                   <Globe size={18} className="input-icon" />
                   <input
@@ -246,11 +223,8 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-
               <div className="form-group">
-                <label className="form-label">
-                  Téléphone
-                </label>
+                <label className="form-label">Téléphone</label>
                 <div className="input-wrapper">
                   <Phone size={18} className="input-icon" />
                   <input
@@ -262,38 +236,43 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-
               <div className="form-group">
-                <label className="form-label">
-                  Email
-                </label>
+                <label className="form-label">LinkedIn</label>
                 <div className="input-wrapper">
-                  <Mail size={18} className="input-icon" />
+                  <Globe size={18} className="input-icon" />
                   <input
-                    type="email"
-                    name="email"
-                    value={companyData.email}
+                    type="text"
+                    name="linkedin"
+                    value={companyData.linkedin}
+                    onChange={handleCompanyChange}
+                    className="form-input"
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Twitter</label>
+                <div className="input-wrapper">
+                  <Globe size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    name="twitter"
+                    value={companyData.twitter}
                     onChange={handleCompanyChange}
                     className="form-input"
                   />
                 </div>
               </div>
             </div>
-
             <div className="form-actions">
-              <button 
-                type="submit"
-                className="save-button"
-              >
-                <Save size={16} />
-                Enregistrer les modifications
+              <button type="submit" className="save-button">
+                <Save size={16} /> Enregistrer les modifications
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      {/* Paramètres de notification */}
+      {/* Section Notifications */}
       <div className="card">
         <div className="card-header">
           <h2 className="card-title">Paramètres de notification</h2>
@@ -301,68 +280,7 @@ const SettingsContent = () => {
         <div className="card-body">
           <form onSubmit={handleSaveNotifications}>
             <div className="notification-section">
-              <h3 className="section-title">Notifications d'événements</h3>
-              
-              <div className="checkbox-grid">
-                <div className="checkbox-group">
-                  <input
-                    type="checkbox"
-                    id="newApplications"
-                    name="newApplications"
-                    checked={notificationSettings.newApplications}
-                    onChange={handleNotificationChange}
-                    className="custom-checkbox"
-                  />
-                  <label htmlFor="newApplications" className="checkbox-label">
-                    Nouvelles candidatures
-                  </label>
-                </div>
-                
-                <div className="checkbox-group">
-                  <input
-                    type="checkbox"
-                    id="applicationUpdates"
-                    name="applicationUpdates"
-                    checked={notificationSettings.applicationUpdates}
-                    onChange={handleNotificationChange}
-                    className="custom-checkbox"
-                  />
-                  <label htmlFor="applicationUpdates" className="checkbox-label">
-                    Mises à jour des candidatures
-                  </label>
-                </div>
-                
-                <div className="checkbox-group">
-                  <input
-                    type="checkbox"
-                    id="jobExpiration"
-                    name="jobExpiration"
-                    checked={notificationSettings.jobExpiration}
-                    onChange={handleNotificationChange}
-                    className="custom-checkbox"
-                  />
-                  <label htmlFor="jobExpiration" className="checkbox-label">
-                    Expiration des offres
-                  </label>
-                </div>
-                
-                <div className="checkbox-group">
-                  <input
-                    type="checkbox"
-                    id="weeklyReports"
-                    name="weeklyReports"
-                    checked={notificationSettings.weeklyReports}
-                    onChange={handleNotificationChange}
-                    className="custom-checkbox"
-                  />
-                  <label htmlFor="weeklyReports" className="checkbox-label">
-                    Rapports hebdomadaires
-                  </label>
-                </div>
-              </div>
-              
               <h3 className="section-title">Canaux de notification</h3>
-              
               <div className="checkbox-grid">
                 <div className="checkbox-group">
                   <input
@@ -377,7 +295,6 @@ const SettingsContent = () => {
                     Notifications par email
                   </label>
                 </div>
-                
                 <div className="checkbox-group">
                   <input
                     type="checkbox"
@@ -391,23 +308,31 @@ const SettingsContent = () => {
                     Notifications navigateur
                   </label>
                 </div>
+                <div className="checkbox-group">
+                  <input
+                    type="checkbox"
+                    id="smsNotifications"
+                    name="smsNotifications"
+                    checked={notificationSettings.smsNotifications}
+                    onChange={handleNotificationChange}
+                    className="custom-checkbox"
+                  />
+                  <label htmlFor="smsNotifications" className="checkbox-label">
+                    Notifications SMS
+                  </label>
+                </div>
               </div>
             </div>
-            
             <div className="form-actions">
-              <button 
-                type="submit"
-                className="save-button"
-              >
-                <Save size={16} />
-                Enregistrer les préférences
+              <button type="submit" className="save-button">
+                <Save size={16} /> Enregistrer les préférences
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      {/* Changement de mot de passe */}
+      {/* Section Mot de passe */}
       <div className="card">
         <div className="card-header">
           <h2 className="card-title">Sécurité</h2>
@@ -415,12 +340,9 @@ const SettingsContent = () => {
         <div className="card-body">
           <form onSubmit={handleSavePassword}>
             <h3 className="section-title">Changer le mot de passe</h3>
-            
             <div className="form-grid">
               <div className="form-group">
-                <label className="form-label">
-                  Mot de passe actuel
-                </label>
+                <label className="form-label">Mot de passe actuel</label>
                 <div className="input-wrapper">
                   <Lock size={18} className="input-icon" />
                   <input
@@ -432,11 +354,8 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-              
               <div className="form-group">
-                <label className="form-label">
-                  Nouveau mot de passe
-                </label>
+                <label className="form-label">Nouveau mot de passe</label>
                 <div className="input-wrapper">
                   <Lock size={18} className="input-icon" />
                   <input
@@ -448,11 +367,8 @@ const SettingsContent = () => {
                   />
                 </div>
               </div>
-              
               <div className="form-group">
-                <label className="form-label">
-                  Confirmez le nouveau mot de passe
-                </label>
+                <label className="form-label">Confirmez le nouveau mot de passe</label>
                 <div className="input-wrapper">
                   <Lock size={18} className="input-icon" />
                   <input
@@ -465,7 +381,6 @@ const SettingsContent = () => {
                 </div>
               </div>
             </div>
-            
             <div className="toggle-password-container">
               <button
                 type="button"
@@ -476,14 +391,9 @@ const SettingsContent = () => {
                 {passwordData.showPasswords ? 'Masquer les mots de passe' : 'Afficher les mots de passe'}
               </button>
             </div>
-            
             <div className="form-actions">
-              <button 
-                type="submit"
-                className="save-button"
-              >
-                <Save size={16} />
-                Mettre à jour le mot de passe
+              <button type="submit" className="save-button">
+                <Save size={16} /> Mettre à jour le mot de passe
               </button>
             </div>
           </form>

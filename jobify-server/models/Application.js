@@ -29,11 +29,28 @@ const ApplicationSchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected', 'test_in_progress', 'test_completed'],
     default: 'pending'
   },
-  // Résultats du test technique
+  // ✅ CORRIGÉ - Résultats du test technique avec testId
   testResults: {
     score: Number,
-    completedAt: Date
-  }
+    completedAt: Date,
+    testId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'TechnicalTest'
+    }
+  },
+  psychologicalTestCompleted: {
+    type: Boolean,
+    default: false
+  },
+  psychologicalTestResults: {
+    overall_score: Number,
+    completedAt: Date,
+    testId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'PsychologicalTest'
+    }
+  },
+ 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Application', ApplicationSchema);
